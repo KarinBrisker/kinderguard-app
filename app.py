@@ -8,7 +8,7 @@ from pprint import pprint
 app = Flask(__name__)
 
 # Load configuration from .env file
-config = dotenv_values("/Users/karin.brisker/kinderguard/kinderguard/.env")
+config = dotenv_values("kinderguard/.env")
 
 # Define constants from the .env file or default values
 consts = Consts(
