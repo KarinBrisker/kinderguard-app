@@ -19,8 +19,6 @@ KinderGuard is a web application designed to protect children using advanced aud
 ### Requirements
 
 - Python (3.8+)
-- Node.js (14+)
-- npm or yarn
 
 ### Python Setup
 
@@ -35,23 +33,6 @@ KinderGuard is a web application designed to protect children using advanced aud
     ```bash
     pip install -r requirements.txt
     ```
-
-3. Set the `AZURE_COSMOS_CONNECTION_STRING` environment variable to the connection string for your MongoDB/CosmosDB.
-
-### Node.js Setup
-
-1. Navigate to the `kinderguard/src/web` directory:
-
-    ```bash
-    cd kinderguard/src/web
-    ```
-
-2. Install the required Node.js packages:
-
-    ```bash
-    npm install
-    ```
-
 ## Running the Application
 
 ### Python API
@@ -65,36 +46,12 @@ KinderGuard is a web application designed to protect children using advanced aud
 2. Start the API server:
 
     ```bash
-    uvicorn app:app --port 3100 --reload
-    ```
-
-### Web Application
-
-1. Navigate to the `kinderguard/src/web` directory:
-
-    ```bash
-    cd kinderguard/src/web
-    ```
-
-2. Start the development server:
-
-    ```bash
-    npm run dev
+    python app.py
     ```
 
 ## Running in Docker
 
-1. Build the Docker image:
 
-    ```bash
-    docker build . -t kinderguard
-    ```
-
-2. Run the Docker container:
-
-    ```bash
-    docker run --env-file ./kinderguard/.env -p 8080:8080 -t kinderguard
-    ```
 
 ## Contributing
 
