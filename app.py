@@ -41,7 +41,7 @@ def upload_video_file():
         return jsonify({"error": "No selected file"}), 400
 
     # Specify the directory where you want to save the files
-    save_directory = '/Users/karin.brisker/kinderguard/kinderguard/resources/save_dir'
+    save_directory = './kinderguard/resources/save_dir'
     
     # Ensure the directory exists
     if not os.path.exists(save_directory):
