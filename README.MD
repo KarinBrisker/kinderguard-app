@@ -25,7 +25,8 @@ KinderGuard is a web application designed to protect children using advanced aud
 - Emotions: Anger, Fear, Joy, Sad, None
 - Sentiments: Positive, Negative, Neutral
 - Speaker Identification: (Sorted indexes - Speaker_1,..., Speaker_n)
-- [Audio Event Detection](https://learn.microsoft.com/en-us/azure/azure-video-indexer/audio-effects-detection-insight) - Silence
+- [Audio Event Detection](https://learn.microsoft.com/en-us/azure/azure-video-indexer/audio-effects-detection-insight) - Silence, Crowd Reactions, Silence, Breaking glass, Alarm or siren,
+Laughter, Crying, Music playing, Screaming
 
 ## Table of Contents  --
 
