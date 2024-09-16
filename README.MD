@@ -2,6 +2,27 @@
 
 KinderGuard is a web application designed to protect children using advanced audio insights. The application leverages Azure Video Indexer to analyze audio content and provide valuable insights.
 
+
+### Video Indexer Capabilities
+
+| Capability Name         | Uses                | Decision | Notes                                                    |
+|-------------------------|---------------------|---------------------|----------------------------------------------------------|
+| Face Detection          | Video               | No                  | 
+| Emotion Detection       | Video, Audio        | **Yes**                 | Can help identify  emotions|
+| Sentiment Analysis      | Text                | **Yes**                 | Analyzes text sentiment |
+| Speaker Identification  | Audio               | No                  | 
+| Keyframe Extraction     | Video               | No                 | 
+| Visual Text Recognition | Video               | No                  |
+| **Audio Transcription**     | Audio               | **Yes**                 | Converts speech to text            |
+| Keyword Extraction      | Text                | No                 | 
+| Object Detection        | Video               | No                 | 
+| Scene Detection         | Video               | No                 |
+| Translation             | Text                | No                  |
+| Language Identification | Audio, Text         | No                  |
+| **Audio Event Detection**   | Audio               | **Yes**                 | Detects specific sounds      |
+| Topic Modeling          | Text                | No                 
+
+
 ## Table of Contents
 
 - [Project Structure](#project-structure)
@@ -12,7 +33,7 @@ KinderGuard is a web application designed to protect children using advanced aud
 - [License](#license)
 
 ## Project Structure
-
+- [VI](https://www.videoindexer.ai/media/library)
 
 ## Setup
 
