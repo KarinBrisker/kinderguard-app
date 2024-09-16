@@ -8,7 +8,7 @@ from pprint import pprint
 app = Flask(__name__)
 
 # Load configuration from .env file
-config = dotenv_values("kinderguard/.env")
+config = dotenv_values('.env')
 
 # Define constants from the .env file or default values
 consts = Consts(
@@ -22,7 +22,7 @@ consts = Consts(
 )
 
 # Create Video Indexer Client
-client = VideoIndexerService()
+client = VideoIndexerService(consts)
 # Authenticate
 client.authenticate_async()
 client.get_account_async()
