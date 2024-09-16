@@ -27,7 +27,7 @@ KinderGuard is a web application designed to protect children using advanced aud
 - Speaker Identification: (Sorted indexes - Speaker_1,..., Speaker_n)
 - [Audio Event Detection](https://learn.microsoft.com/en-us/azure/azure-video-indexer/audio-effects-detection-insight) - Silence
 
-## Table of Contents
+## Table of Contents  --
 
 - [Project Structure](#project-structure)
 - [Setup](#setup)
