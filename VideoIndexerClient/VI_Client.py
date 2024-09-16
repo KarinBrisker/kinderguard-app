@@ -15,7 +15,7 @@ def get_file_name_no_extension(file_path: str) -> str:
 
 
 # Load configuration from .env file
-config = dotenv_values("/Users/karin.brisker/kinderguard/kinderguard/.env")
+config = dotenv_values(".env")
 
 # Define constants from the .env file or default values
 consts = Consts(
