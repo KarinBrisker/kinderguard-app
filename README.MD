@@ -23,7 +23,7 @@ KinderGuard is a web application designed to protect children using advanced aud
 | Topic Modeling          | Text                | No                 
 
 
-## Table of Contents
+## Table of Contents  --
 
 - [Project Structure](#project-structure)
 - [Setup](#setup)
