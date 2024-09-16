@@ -8,8 +8,8 @@ KinderGuard is a web application designed to protect children using advanced aud
 | Capability Name         | Uses                | Decision | Notes                                                    |
 |-------------------------|---------------------|---------------------|----------------------------------------------------------|
 | Face Detection          | Video               | No                  | 
-| Emotion Detection       | Video, Audio        | **Yes**                 | Can help identify  emotions|
-| Sentiment Analysis      | Text                | **Yes**                 | Analyzes text sentiment |
+|**Emotion Detection**       | Text       | **Yes**                 | Can help identify  emotions|
+| **Sentiment Analysis**      | Text                | **Yes**                 | Analyzes text sentiment |
 | Speaker Identification  | Audio               | No                  | 
 | Keyframe Extraction     | Video               | No                 | 
 | Visual Text Recognition | Video               | No                  |
@@ -22,6 +22,10 @@ KinderGuard is a web application designed to protect children using advanced aud
 | **Audio Event Detection**   | Audio               | **Yes**                 | Detects specific sounds      |
 | Topic Modeling          | Text                | No                 
 
+- Emotions: Anger, Fear, Joy, Sad, None
+- Sentiments: Positive, Negative, Neutral
+- Speaker Identification: (Sorted indexes - Speaker_1,..., Speaker_n)
+- [Audio Event Detection](https://learn.microsoft.com/en-us/azure/azure-video-indexer/audio-effects-detection-insight) - Silence
 
 ## Table of Contents
 
