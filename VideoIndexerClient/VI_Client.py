@@ -14,23 +14,8 @@ def get_file_name_no_extension(file_path: str) -> str:
     return os.path.splitext(os.path.basename(file_path))[0]
 
 
-# Load configuration from .env file
-config = dotenv_values(".env")
-
-# Define constants from the .env file or default values
-consts = Consts(
-    ApiVersion=config.get('ApiVersion', '2024-01-01'),
-    ApiEndpoint=config.get('ApiEndpoint', 'https://api.videoindexer.ai'),
-    AzureResourceManager=config.get('AzureResourceManager', 'https://management.azure.com'),
-    AccountName=config.get('AccountName'),
-    ResourceGroup=config.get('ResourceGroup'),
-    SubscriptionId=config.get('SubscriptionId'),
-    TenantId=config.get('TenantId')
-)
-
-
 class VideoIndexerService:
-    def __init__(self) -> None:
+    def __init__(self, consts) -> None:
         self.arm_access_token = ''
         self.vi_access_token = ''
         self.account = None
