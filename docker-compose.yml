@@ -9,6 +9,7 @@ services:
       - ./backend:/app
     environment:
       - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
 
   frontend:
     build: ./frontend
