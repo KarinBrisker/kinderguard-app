@@ -1,5 +1,6 @@
 import logo from './kinderguard_logo.png';
 import './App.css';
+import CredentialsInput from "./credentialsInput/credentialsInput";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           Welcome to kinderguard app
         </p>
+          <CredentialsInput />
       </header>
     </div>
   );
