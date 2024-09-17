@@ -4,6 +4,7 @@ VideoIndexerClient/__pycache__/Consts.cpython-311.pyc
 VideoIndexerClient/__pycache__/__init__.cpython-311.pyc
 resources/save_dir/REC0001.WAV
 resources/save_dir/*
+frontend/node_modules/*
 .env
 .DS_Store
 .gitignore
