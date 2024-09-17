@@ -6,6 +6,15 @@ import { useState } from "react";
 
 const LOCATION_DEFAULT = 'trial';
 
+const styles = {
+    body: {
+        margin: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
+}
+
 function App() {
     const [token, setToken] = useState('');
     const [accountId, setAccountId] = useState('');
@@ -19,11 +28,15 @@ function App() {
                     Welcome to kinderguard app
                 </p>
             </header>
-            <CredentialsInput token={token} onChangeToken={setToken}
-                              accountId={accountId} onChangeAccountId={setAccountId}
-                              location={location} onChangeLocation={setLocation}
-            />
-            <UploadContainer token={token} accountId={accountId} location={location}/>
+            <body style={styles.body}>
+            <div style={styles.container}>
+                <CredentialsInput token={token} onChangeToken={setToken}
+                                  accountId={accountId} onChangeAccountId={setAccountId}
+                                  location={location} onChangeLocation={setLocation}
+                />
+                <UploadContainer token={token} accountId={accountId} location={location}/>
+            </div>
+            </body>
         </div>
     );
 }
