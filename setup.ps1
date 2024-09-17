@@ -1,5 +1,6 @@
 # Prompt the user for a name
 $name = Read-Host -Prompt 'Enter  your alias'
+$domain = Read-Host -Prompt 'Enter  your domain (hotmail or outlook)'
 
 # Define the resource group and template file
 $resourceGroupName = $name +"-rg"
@@ -54,3 +55,7 @@ VUE_APP_LOCATION = '$location'
 
 # Output a message to the console
 Write-Output "Account info has been written to $envFilePath"
+$generateTokenUrl = "https://portal.azure.com/#@$name$domain.onmicrosoft.com/resource/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.VideoIndexer/accounts/$accountName/management_api_item"
+Write-Output "Please go to $generateTokenUrl to generate a Video Indexer token"
+
+Add-Content -Path $envFilePath -Value "GenerateTokenUrl='$generateTokenUrl'"
