@@ -83,6 +83,18 @@ We welcome contributions to KinderGuard! Please follow these steps to contribute
 3. Commit your changes and push the branch to your fork.
 4. Create a pull request to the main repository.
 
+
+## Resources
+[Video Indexer Official Website](https://www.videoindexer.ai/)
+
+[Video Indexer API](https://api-portal.videoindexer.ai/api-details#api=Operations&operation=Get-Account-Access-Token)
+
+[How to get Free Azure Credits - Microsoft Employees Only ](https://www.osgwiki.com/wiki/Azure_Credit)
+
+[Azure Video Indexer API Samples](https://github.com/Azure-Samples/azure-video-indexer-samples/tree/master/API-Samples)
+
+[Embed Azure Video Indexer Widgets](https://learn.microsoft.com/en-us/azure/azure-video-indexer/video-indexer-embed-widgets)
+
 ## License
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
