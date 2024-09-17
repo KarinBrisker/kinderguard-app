@@ -1,0 +1,79 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "name": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the Video Indexer resource"
+        }
+      },
+      "storageAccountPrefix": {
+        "type": "string",
+        "defaultValue": "vistorage",
+        "metadata": {
+          "description": "The name of the storage account"
+        }
+      },
+      "videoIndexrAccountPrefix": {
+        "type": "string",
+        "defaultValue": "viaccount",
+        "metadata": {
+          "description": "The name of the storage account"
+        }
+      }
+    },
+  
+    "variables": {
+      "StorageBlobDataContributorRoleId": "ba92f5b4-2d11-453d-a403-e96b0029c9fe",
+      "apiVersion": "2024-01-01",
+      "strorageAccountKind": "StorageV2",
+      "storageAccountSku": "Standard_LRS",
+      "storageAccountName": "[concat(parameters('storageAccountPrefix'),parameters('name'))]",
+      "videoIndexerAccountName": "[concat(parameters('videoIndexrAccountPrefix'),parameters('name'))]"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2021-04-01",
+        "name":  "[variables('storageAccountName')]",
+        "location": "[resourceGroup().location]",
+        "kind": "[variables('strorageAccountKind')]",
+        "properties": {
+          "minimumTlsVersion": "TLS1_2"
+        },
+        "sku": {
+          "name": "[variables('storageAccountSku')]"
+        }
+      },
+      {
+        "type": "Microsoft.VideoIndexer/accounts",
+        "apiVersion": "[variables('apiVersion')]",
+        "name":  "[variables('videoIndexerAccountName')]",
+        "location": "[resourceGroup().location]",
+        "identity": {
+          "type": "SystemAssigned"
+        },
+        "properties": {
+          "storageServices": {
+            "resourceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+          }
+        }
+      },
+      {
+        "type": "Microsoft.Authorization/roleAssignments",
+        "apiVersion": "2020-04-01-preview",
+        "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), resourceId('Microsoft.VideoIndexer/accounts', parameters('name')), 'VideoIndexerRoleAssignment')]",
+        "dependsOn": [
+          "[resourceId('Microsoft.VideoIndexer/accounts', variables('videoIndexerAccountName'))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        ],
+        "properties": {
+          "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', variables('StorageBlobDataContributorRoleId'))]",
+          "principalId": "[reference(resourceId('Microsoft.VideoIndexer/accounts', variables('videoIndexerAccountName')), variables('apiVersion'), 'Full').identity.principalId]",
+          "scope": "[resourceGroup().id]"
+        }
+      }
+    ]
+  }
+  
