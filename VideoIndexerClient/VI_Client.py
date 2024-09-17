@@ -340,7 +340,7 @@ class VideoIndexerService:
         custom_insights = {
             "Name": "SentimentsFromAudio",
             "DisplayName": "Sentiment (From Audio)",
-            "DisplayType": "CapsuleAndTags",  # Assuming this is a valid value for DisplayType
+            "DisplayType": "Capsule",     # DisplayType: Capsule / CapsuleAndTags (if there is SubType)
             "Results": [
                 {
                     "Type": "Anger",   # required - the result from the AI model
