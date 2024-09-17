@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { InfoButtonWithModal } from "../HowToModal/howToModal";
 
 const styles = {
     container: {
@@ -53,10 +54,10 @@ const CredentialsInput = (props) => {
         <div style={styles.authBox}>
             <label>Token:</label>
             <input style={styles.inputField}
-                type="password"
-                value={token}
-                onChange={handleTokenChange}
-                placeholder="Token"
+                   type="password"
+                   value={token}
+                   onChange={handleTokenChange}
+                   placeholder="Token"
             />
         </div>
     )
@@ -65,10 +66,10 @@ const CredentialsInput = (props) => {
         <div style={styles.authBox}>
             <label>Account ID:</label>
             <input style={styles.inputField}
-                type="text"
-                value={accountId}
-                onChange={handleAccountIDChange}
-                placeholder="Account ID"
+                   type="text"
+                   value={accountId}
+                   onChange={handleAccountIDChange}
+                   placeholder="Account ID"
             />
         </div>
     )
@@ -78,19 +79,21 @@ const CredentialsInput = (props) => {
         <div style={styles.authBox}>
             <label>API location</label>
             <input style={styles.inputField}
-                type="text"
-                value={location}
-                onChange={handleLocationChange}
-                placeholder="Type the location for your API"
+                   type="text"
+                   value={location}
+                   onChange={handleLocationChange}
+                   placeholder="Type the location for your API"
             />
         </div>
     )
+
 
     return (
         <div style={styles.container}>
             {accountInput}
             {tokenInput}
             {locationInput}
+            <InfoButtonWithModal/>
         </div>
     );
 };
