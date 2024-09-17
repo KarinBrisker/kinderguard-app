@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/kinderguard-app/static/css/main.e298bdf7.css",
+    "main.js": "/kinderguard-app/static/js/main.e67a3482.js",
+    "static/js/453.682ebf46.chunk.js": "/kinderguard-app/static/js/453.682ebf46.chunk.js",
+    "static/media/kinderguard_logo.png": "/kinderguard-app/static/media/kinderguard_logo.074721e3b7221f6706ee.png",
+    "index.html": "/kinderguard-app/index.html",
+    "main.e298bdf7.css.map": "/kinderguard-app/static/css/main.e298bdf7.css.map",
+    "main.e67a3482.js.map": "/kinderguard-app/static/js/main.e67a3482.js.map",
+    "453.682ebf46.chunk.js.map": "/kinderguard-app/static/js/453.682ebf46.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e298bdf7.css",
+    "static/js/main.e67a3482.js"
+  ]
+}
