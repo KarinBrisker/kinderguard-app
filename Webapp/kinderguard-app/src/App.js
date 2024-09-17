@@ -1,5 +1,6 @@
 import logo from './kinderguard_logo.png';
 import './App.css';
+import { UploadContainer } from './upload-container/UploadContainer';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
           Welcome to kinderguard app
         </p>
       </header>
+      <UploadContainer/>
     </div>
   );
 }
