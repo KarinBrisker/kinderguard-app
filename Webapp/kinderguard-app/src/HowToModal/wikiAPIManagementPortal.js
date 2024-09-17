@@ -7,6 +7,9 @@ const styles = {
         margin: '0',
         fontSize: '1em',
         color: '#333333',
+    },
+    sublist: {
+        listStyleType: 'lower-alpha'
     }
 };
 
@@ -24,10 +27,10 @@ const WikiAPIManagementPortal = () => {
                     </li>
                     <li>
                         Generate the access token by setting the appropriate parameters and hitting ‘Send’:
-                        <ol>
+                        <ul styles={styles.sublist}>
                             <li>Location – ‘trial’ (or for non-trial account enter the region for your account).</li>
                             <li>AccountId - the id of your account (will appear in Video Indexer UI)</li>
-                        </ol>
+                        </ul>
                     </li>
                 </ol>
             </p>
