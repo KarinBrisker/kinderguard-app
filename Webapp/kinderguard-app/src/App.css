@@ -2,6 +2,8 @@
   text-align: center;
   background-color: #282c34;
   height: 100vh;
+  color: #ffffff; /* Bright text */
+  font-size: 1.5em; /* Medium-high font size */
 }
 
 .App-logo {
