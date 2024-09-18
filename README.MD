@@ -44,12 +44,17 @@ Laughter, Crying, Music playing, Screaming
 ### Prerequisites
 Make sure you have Docker installed on your computer. If Docker is not installed, download and install Docker for your operating system.
 
-### Build and Run the Application:
-From the root directory of the project, run the following command to build and start the containers:
-
+### First-Time Setup: Build and Run the Application:
+From the root directory of the project, run the following command to build and start the containers for the first time:
 - **docker-compose build && docker-compose up**
-
 This will build both the frontend and backend Docker images and start the application.
+
+### ubsequent Usage: Starting and Stopping the Containers:
+After the initial setup, you can use the following commands to start and stop the application:
+- Start the containers:
+- **docker-compose up**
+- Stop the containers:
+- **docker-compose down**
 
 **Access the Application:**
 - The frontend (React app) will be accessible at http://localhost:3000.
