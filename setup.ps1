@@ -1,13 +1,19 @@
-# Prompt the user for a name
-$name = Read-Host -Prompt 'Enter  your alias'
-$domain = Read-Host -Prompt 'Enter  your domain (hotmail or outlook)'
+# Login to Azure
+az login
+
+# Get the subscription ID
+$account = az account show --output json | ConvertFrom-Json
+$subscriptionId = $account.id
+$username = $account.user.name
+# Split the email address into name and domain
+$parts = $username -split "@"
+$name = $parts[0].ToLower()
+$domain = $parts[1] -replace "\.com$", ""
 
 # Define the resource group and template file
 $resourceGroupName = $name +"-rg"
 $templateFile = "template.json"
 
-# Login to Azure
-az login
 
 #create resource group 
 az group create --name $resourceGroupName --location "East US"
@@ -25,10 +31,6 @@ else {
 }
 
 Write-Output "Getting account details"
-# Get the subscription ID
-$subscription = (Get-AzContext).Subscription
-$subscriptionId = $subscription.Id
-$tenetId = $subscription.TenantId
 
 # Define the .env file path
 $envFilePath = "VIAccountInformation"
@@ -37,7 +39,7 @@ $accountName = "viaccount$name"
 
 
 $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.VideoIndexer/accounts/$accountName"
-$resource = az resource show --ids $resourceId
+$resource = az resource show --ids $resourceId  --output json | ConvertFrom-Json
 # Extract account ID and location
 $accountId = $resource.properties.accountId
 $location = $resource.location
@@ -51,7 +53,7 @@ Location = $location
 
 # Output a message to the console
 Write-Output "Account info has been written to $envFilePath"
-$generateTokenUrl = "https://portal.azure.com/#@$name$domain.onmicrosoft.com/resource/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.VideoIndexer/accounts/$accountName/management_api_item"
+$generateTokenUrl = "https://portal.azure.com/#$name$domain.onmicrosoft.com/resource/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.VideoIndexer/accounts/$accountName/management_api_item"
 Write-Output "Please go to $generateTokenUrl to generate a Video Indexer token"
 
 Add-Content -Path $envFilePath -Value "GenerateTokenUrl='$generateTokenUrl'"
