@@ -1,0 +1,24 @@
+# docker-compose.yml
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000" # Map local port 3000 to the container port
+    volumes:
+      - ./frontend:/app # Bind the frontend code to the container for live development
+      - /app/node_modules # Prevent the node_modules folder from being overridden by the local folder
+    depends_on:
+      - backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Necessary for file change detection on Windows
