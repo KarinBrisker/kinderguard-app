@@ -1,3 +1,5 @@
+# The `YAMNetAudioClassifier` class is a Python class that uses TensorFlow and TensorFlow Hub to
+# analyze audio files and generate insights about the sound labels present in the audio.
 import csv
 import json
 
@@ -9,7 +11,7 @@ from scipy.io import wavfile
 
 
 class YAMNetAudioClassifier:
-    def __init__(self, model_url='https://tfhub.dev/google/yamnet/1', class_map_file='../resources/yamnet_supported_classes.json'):
+    def __init__(self, model_url='https://tfhub.dev/google/yamnet/1', class_map_file='yamnet_supported_classes.json'):
         self.model = hub.load(model_url)
         self.class_map_file = class_map_file
         self.class_names = self.load_class_names(self.model.class_map_path().numpy())

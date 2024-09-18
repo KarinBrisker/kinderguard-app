@@ -8,6 +8,9 @@ from dotenv import dotenv_values
 import os
 from pprint import pprint
 
+from kinderguard.backend.YAMNet import YAMNetAudioClassifier
+
+
 app = Flask(__name__)
 
 # Load configuration from .env file
@@ -27,7 +30,10 @@ def background_task(file, video_id, account_id, access_token, location):
     print(f"Video ID: {video_id}, Account ID: {account_id}")
     print(f"Location: {location}, Access Token: {access_token}")
     
-    time.sleep(10)
+        
+    classifier = YAMNetAudioClassifier()
+    json_custom_insights = classifier(file)
+    patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
 
     print("Background task completed.")
 
