@@ -43,13 +43,11 @@ class YAMNetAudioClassifier:
         """Load supported classes from JSON."""
         with open(self.class_map_file, 'r') as f:
             return json.load(f)
-
-    def analyze_audio(self, file_storage):
+        
+    def analyze_audio(self, file_stream):
         """Load and analyze audio file."""
-        # Read the file content from FileStorage object (e.g., Flask's file uploads)
-        file_storage.seek(0)  # Reset file pointer to ensure we can read from the beginning
-        file_stream = BytesIO(file_storage.read())  # Convert FileStorage to BytesIO
-
+        # file_stream is already a BytesIO object passed from the background task
+        
         # Read the audio data and sample rate from the BytesIO stream
         wav_data, sample_rate = sf.read(file_stream)
 
@@ -71,6 +69,7 @@ class YAMNetAudioClassifier:
         print(f'The main sound is: {inferred_class}')
 
         return scores_np
+
 
     def generate_insights(self, scores):
         """Generate and save insights based on the model's scores."""

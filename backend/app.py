@@ -28,17 +28,29 @@ config = dotenv_values('.env')
 #client.authenticate_async()
 #client.get_account_async()
 
+from io import BytesIO
+
 def background_task(file, video_id, account_id, access_token, location):
     # Simulating a long-running task with a delay
     print("Started background task...")
     print(f"Video ID: {video_id}, Account ID: {account_id}")
     print(f"Location: {location}, Access Token: {access_token}")
     
+    # Read the file content into memory before passing it to the background task
+    file_content = file.read()  # Read file contents into memory
+    file_buffer = BytesIO(file_content)  # Store it in a BytesIO object
+    
+    # Initialize the classifier
     classifier = YAMNetAudioClassifier()
-    json_custom_insights = classifier(file)
+    
+    # Pass the in-memory BytesIO object to the classifier
+    json_custom_insights = classifier(file_buffer)
+    
+    # Proceed with further processing
     patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
 
     print("Background task completed.")
+
 
 @app.route('/upload_test', methods=['GET'])
 def upload_test():
