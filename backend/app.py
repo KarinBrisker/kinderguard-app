@@ -82,14 +82,14 @@ def upload_file():
     
     return jsonify(response), 202
 
-def patch_index_async(self, account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
+def patch_index_async(account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
     """Patch the index with custom insights."""
     
     params = {
         'accessToken': access_token
     }
     
-    url = f'{apiEndpoint}/{location}/Accounts/{accountId}/Videos/{video_id}'
+    url = f'{apiEndpoint}/{location}/Accounts/{account_id}/Videos/{video_id}'
 
     # Prepare the payload
     wrapper = [
