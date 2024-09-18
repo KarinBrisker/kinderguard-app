@@ -6,8 +6,6 @@
 - open a powershell terminal 
 - cd into `kinderguard`
 - run ./setup.ps1
-- The script will ask for your alias and domain. 
-Make sure to properly enter your alias and your domain. For instance if your personal account is `israelisraeli@outlook.com`, the alias is `israelisraeli` and the domain is `outlook`
 - The script will run everything automatically and should open a window where you will login with your personal account
 - After the script finishes running, it will provide you with an URL where you can generate an access token for Video Indexer. 
 - You can also find the URL in the .env file as so:
