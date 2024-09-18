@@ -58,6 +58,7 @@ export function UploadContainer(props) {
         // Create a from data from the file
         const formData = new FormData();
         formData.append('file', file);
+        let videoId = null;
 
         try {
             const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
@@ -75,12 +76,38 @@ export function UploadContainer(props) {
             const data = await response.json();
             console.log('Upload successful:', data);
 
+            videoId = data.id;
             // Get video status and check if it's processed
             await fetchVideoStatus(data.id, accountId, token, location);
         } catch (error) {
             console.error('Error uploading file:', error);
         }
+       
+        
+        formData.append('video_id', videoId);
+        formData.append('account_id', accountId);
+        formData.append('access_token', token);
+        formData.append('location', location);
+
+        try {
+            // Make the POST request to the backend
+            const response = await fetch('http://localhost:5000/upload', {
+                method: 'POST',
+                body: formData, // Send the FormData object as the request body
+            });
+
+            // Check for HTTP response status
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Response:', data);
+            } else {
+                console.error('Upload failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
+
 
     const fetchVideoStatus = async (currentVID, accountId, token, location) => {
         try {
