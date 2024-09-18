@@ -8,7 +8,7 @@ from dotenv import dotenv_values
 import os
 from pprint import pprint
 
-from kinderguard.backend.YAMNet import YAMNetAudioClassifier
+from YAMNet import YAMNetAudioClassifier
 
 
 app = Flask(__name__)
