@@ -41,10 +41,10 @@ Laughter, Crying, Music playing, Screaming
 - [VI](https://www.videoindexer.ai/media/library)
 
 ## Setup
-# Prerequisites
-- Make sure you have Docker installed on your computer. If Docker is not installed, download and install Docker for your operating system.
+### Prerequisites
+Make sure you have Docker installed on your computer. If Docker is not installed, download and install Docker for your operating system.
 
-# Build and Run the Application:
+### Build and Run the Application:
 - From the root directory of the project, run the following command to build and start the containers:
 
 docker-compose build && docker-compose up
