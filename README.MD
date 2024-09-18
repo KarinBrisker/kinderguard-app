@@ -49,7 +49,7 @@ From the root directory of the project, run the following command to build and s
 - **docker-compose build && docker-compose up**
 This will build both the frontend and backend Docker images and start the application.
 
-### ubsequent Usage: Starting and Stopping the Containers:
+### Subsequent Usage: Starting and Stopping the Containers:
 After the initial setup, you can use the following commands to start and stop the application:
 - Start the containers:
 - **docker-compose up**
