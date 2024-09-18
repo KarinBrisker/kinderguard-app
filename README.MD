@@ -76,7 +76,9 @@ Make sure to properly enter your alias and your domain. For instance if your per
 ```angular2html
 GenerateTokenUrl='https://portal.azure.com/#@israelisraelioutlook.onmicrosoft.com/resource/subscriptions/<subscriptionid>/resourceGroups/<resourcegroupname>/providers/Microsoft.VideoIndexer/accounts/<accountname>/management_api_item'
 ```
-- You can also access this via portal.azure.com -> resource groups -> youralias-rg -> viaccountyouralias -> Management -> Management API -> Access Token Generate 
+- You can also access this via portal.azure.com -> resource groups -> youralias-rg -> viaccountyouralias -> Management -> Management API 
+- Under `Permission type` select `Contributor` 
+- Then under `Access Token`, click: `Generate `
 
 #### Congrats! you can now use your generated access token + account id (saved in the .env file) as credentials in the Kinderguard app!
 
