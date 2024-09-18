@@ -45,9 +45,9 @@ Laughter, Crying, Music playing, Screaming
 Make sure you have Docker installed on your computer. If Docker is not installed, download and install Docker for your operating system.
 
 ### Build and Run the Application:
-- From the root directory of the project, run the following command to build and start the containers:
+From the root directory of the project, run the following command to build and start the containers:
 
-docker-compose build && docker-compose up
+- **docker-compose build && docker-compose up**
 
 This will build both the frontend and backend Docker images and start the application.
 
