@@ -1,3 +1,4 @@
+import json
 import threading
 import time
 
@@ -7,6 +8,8 @@ from dotenv import dotenv_values
 #from VideoIndexerClient.Consts import Consts
 import os
 from pprint import pprint
+
+import requests
 
 from YAMNet import YAMNetAudioClassifier
 
@@ -105,7 +108,7 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
     headers = {'Content-Type': 'application/json'}
 
     # Send the PATCH request
-    response = requests.patch(request_url, params=params, data=json_payload, headers=headers)
+    response = requests.patch(url, params=params, data=json_payload, headers=headers)
     response.raise_for_status()
 
     """
