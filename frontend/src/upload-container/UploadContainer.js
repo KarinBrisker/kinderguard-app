@@ -28,10 +28,9 @@ const styles = {
 };
 
 export function UploadContainer(props) {
-    const { token, accountId, location } = props;
+    const { token, accountId, location, videoId, setVideoId } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
-    const [videoId, setVideoId] = useState(null);
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
@@ -60,7 +59,7 @@ export function UploadContainer(props) {
         formData.append('file', file);
 
         try {
-            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=audio_test&privacy=public&indexingPreset=AdvancedAudio`, {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
