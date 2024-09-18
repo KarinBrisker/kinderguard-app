@@ -35,7 +35,7 @@ export function UploadContainer(props) {
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
-        if (file?.type === 'audio/wav') {
+        if (file?.type === 'audio/wav' || file?.type === 'audio/mp3' || file?.type === 'video/mp4') {
             // Handle the file upload logic here
             console.log('File uploaded:', file);
             setIsLoading(true);
@@ -44,7 +44,7 @@ export function UploadContainer(props) {
             // Uploaded
             setIsUploaded(true);
         } else {
-            console.log('Please upload a WAV file.');
+            console.log('Please upload a WAV/MP4/MP3 file.');
         }
     };
 
@@ -61,7 +61,7 @@ export function UploadContainer(props) {
         let videoId = null;
 
         try {
-            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio`, {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -126,6 +126,7 @@ export function UploadContainer(props) {
             console.log('Video status:', data);
 
             if (data?.state === 'Processed') {
+                await findBadWords(data);
                 setVideoId(currentVID);
                 setIsLoading(false);
             } else {
@@ -137,6 +138,153 @@ export function UploadContainer(props) {
             console.error('Error fetching video status:', error);
         }
     };
+
+    const findBadWords = async (videoIndex) =>{
+        const badWords = ["טיפש",
+            "טיפשון",
+            "טיפשה",
+            "טיפשים",
+            "טיפשות",
+            "מכוער",
+            "מכוערת",
+            "מכוערים",
+            "מכוערות",
+            "שמן",
+            "שמנה",
+            "בכיין",
+            "מעצבן",
+            "קרציה",
+            "מכוער",
+            "אידיוט",
+            "זוז",
+            "זוזו",
+            "תעוף מפה",
+            "לא מקבל",
+            "לא מקבלת",
+            "עונש",
+            "די",
+            "כוס אמא שלך",
+            "כוס אמא",
+            "תמות",
+            "תמותי",
+            "תמותו",
+            "תיחנק",
+            "תיחנקי",
+            "תיחנקו",
+            "סתום",
+            "סתמי",
+            "סתמו",
+            "סתומה",
+            "סתומות",
+            "סתומים",
+            "לא תצא",
+            "לא תאכל",
+            "תעמוד בפינה",
+            "תעמדי בפינה",
+            "תעמוד בצד",
+            "תעמדי בצד",
+            "אמא לא תבוא",
+            "אבא לא יבוא",
+            "חסר ערך",
+            "מטומטם",
+            "שקרן",
+            "פחדן",
+            "חסר תועלת",
+            "מגעיל",
+            "עצלן",
+            "עצלנית",
+            "עצלנים",
+            "עצלניות",
+            "חסר ערך",
+            "חסרת ערך",
+            "חסרי ערך",
+            "חסרות ערך",
+            "מטומטם",
+            "מטומטמת",
+            "מטומטמים",
+            "מטומטמות",
+            "שקרן",
+            "שקרנית",
+            "שקרנים",
+            "שקרניות",
+            "פחדן",
+            "פחדנית",
+            "פחדנים",
+            "פחדניות",
+            "מגעיל",
+            "מגעילה",
+            "מגעילים",
+            "מגעילות",
+            "מרושע",
+            "מרושעת",
+            "מרושעים ",
+            "מרושעות",
+            "מפגר ",
+            "מפגרת",
+            "מפגרים",
+            "מפגרות",
+            "שב בשקט",
+            "שבי בשקט",
+            "לא לזוז",
+            "אל תזוז",
+            "אל תזוזו",
+            "אל תזוזי",
+            "מכות"
+            ];
+
+            const shownWords = [];
+
+            badWords.forEach((word, index) => {
+                const results = videoIndex?.videos[0].insights?.transcript.filter(transcript => transcript?.text.includes(word));
+                let instances = [];
+                results.forEach(element => {
+                    instances = [...instances, ...element.instances]
+                });
+                if (instances.length) {
+                    shownWords.push({
+                        "instances": instances,
+                        "type": word,
+                        "id": index
+                    });
+                }
+            });
+
+            if (shownWords?.length) {
+                const fullObj = [
+                    {
+                        "name": "suspiciousWords",
+                        "displayName": "Suspicious Words",
+                        "displayType": "Capsule",
+                        "results":shownWords
+                    }
+                ]
+
+                // Update insights
+                try {
+                    const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos/${videoIndex.id}/Index?language=he-IL`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify([{
+                            value: fullObj,
+                            "path": "/videos/0/insights/customInsights",
+                            "op": "add"
+                          }])
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+        
+                    const data = await response.json();
+                    console.log('Video status:', data);
+                } catch (error) {
+                    console.error('Error fetching video status:', error);
+                }
+            }
+    }
 
     const debugInputs = (
         <div style={styles.debugInputs}>
@@ -151,7 +299,7 @@ export function UploadContainer(props) {
             {/*{debugInputs}*/}
             {isLoading && <div className="loader"></div>}
             {!isUploaded && !isLoading && (
-                <MDBFile  accept=".wav" onChange={handleFileUpload}/>
+                <MDBFile  accept=".wav,.mp4,.mp3" onChange={handleFileUpload}/>
             )}
             {videoId && <EmbedContainer videoId={videoId} accountId={accountId} location={location}/>}
         </div>
