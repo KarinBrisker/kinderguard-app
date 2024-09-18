@@ -31,7 +31,7 @@ $subscriptionId = $subscription.Id
 $tenetId = $subscription.TenantId
 
 # Define the .env file path
-$envFilePath = ".env"
+$envFilePath = "VIAccountInformation"
 $accountName = "viaccount$name"
 # Write the subscription ID to the .env file
 
@@ -43,13 +43,9 @@ $accountId = $resource.Properties.accountId
 $location = $resource.Location
 
 @"
-AccountName= `'$accountName`'
-ResourceGroup= `'$resourceGroupName' 
-SubscriptionId = `'$subscriptionId`' 
-TenantId = `'$tenetId`' 
-VUE_APP_API_URL = 'https://api.videoindexer.ai'
-VUE_APP_ACCOUNT_ID = '$accountId'
-VUE_APP_LOCATION = '$location'
+Video Indexer Account Name= $accountName
+Video Indexer Account ID = $accountId
+Location = $location
 "@ | Out-File -FilePath $envFilePath -Encoding utf8
 
 
