@@ -1,4 +1,6 @@
 import logo from './kinderguard_logo.png';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css';
 import { UploadContainer } from './upload-container/UploadContainer';
 import { CredentialsInput } from "./credentials-input/CredentialsInput";
@@ -33,7 +35,8 @@ function App() {
             </header>
             <body style={styles.body}>
             <div style={styles.container}>
-                <Disclaimer/>
+                <div style={{padding: "15px"}}><Disclaimer/></div>
+                <br></br>
                 <CredentialsInput token={token} onChangeToken={setToken}
                                   accountId={accountId} onChangeAccountId={setAccountId}
                                   location={location} onChangeLocation={setLocation}

@@ -1,30 +1,16 @@
 import React, { useState } from 'react';
 import { ClickableList } from "./ClickableList/ClickableList";
-
-const styles = {
-    container: {
-        backgroundColor: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-    },
-    button: {
-        width: '500px',
-        padding: '10px',
-        margin: '10px 0',
-        borderRadius: '4px',
-        border: '1px solid #333',
-        backgroundColor: '#2c2c2c',
-        color: '#ffffff',
-        fontSize: '1em',
-        boxSizing: 'border-box',
-        cursor: 'pointer',
-    },
-    debugInputs: {
-        fontSize: '0.5em'
-    }
-};
+import {
+    MDBBtn,
+    MDBModal,
+    MDBModalDialog,
+    MDBModalContent,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+    MDBInput,
+  } from 'mdb-react-ui-kit';
 
 export function VideosFetcher(props) {
     const { token, accountId, location, setVideoId } = props;
@@ -79,12 +65,10 @@ export function VideosFetcher(props) {
         <ClickableList videos={videosList} onClickItem={setVideoId}/> : null;
 
     return (
-        <div className="container" style={styles.container}>
+        <div style={{padding: "15px"}}>
             {isLoading && <div className="loader"></div>}
             {!isLoading && (
-                <button style={styles.button} onClick={fetchExistingVideos}>
-                    <span style={styles.icon}>Fetch existing videos</span>
-                </button>
+                <MDBBtn onClick={fetchExistingVideos}> Fetch existing videos </MDBBtn>
             )
             }
             {

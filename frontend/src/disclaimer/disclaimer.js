@@ -1,40 +1,69 @@
-import React from 'react';
-import { styles } from "./styles";
-import { InfoButtonWithModal } from "../infoButtonWithModal/InfoButtonWithModal";
+import React, { useEffect, useRef, useState } from 'react';
 
-const Disclaimer = () => {
-    const buttonTitle = 'Disclaimer';
-    const modalTitle = (<h1>Please read and understand the information provided before using our tool</h1>);
-    const modalContent = (
-        <div style={styles.textContainer}>
-            <p style={styles.text}>
-                <div>
-                    <strong>The recordings uploaded using this tool can be accessed by anyone that has your account id and video id. Please take it into account.</strong>
+import {
+    MDBBtn,
+    MDBModal,
+    MDBModalDialog,
+    MDBModalContent,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+    MDBInput,
+  } from 'mdb-react-ui-kit';
+  
+  const Disclaimer = () => {
+    const [topRightModal, setTopRightModal] = useState(false);
+
+    const toggleOpen = () => setTopRightModal(!topRightModal);
+  
+    return (
+      <>
+        <MDBBtn onClick={toggleOpen}>Disclaimer</MDBBtn>
+        <MDBModal
+            animationDirection='right'
+            open={topRightModal}
+            tabIndex='-1'
+            onClose={() => setTopRightModal(false)}
+        >
+          <MDBModalDialog position='top-right' side size='lg'>
+            <MDBModalContent>
+            <MDBModalHeader className='bg-info text-white'>
+              <MDBModalTitle>Please read and understand the information provided before using our tool</MDBModalTitle>
+              <MDBBtn
+                color='none'
+                className='btn-close btn-close-white'
+                onClick={toggleOpen}
+              ></MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody>
+              <div className='row'>
+                <div className='col-3 text-center'>
+                  <i className='fas fa-bell fa-4x text-info'></i>
                 </div>
-                <div>
-                    This tool is experimental and is designed to assist in the analysis of
+
+                <div className='col-9' style={{textAlign:"left"}}>
+                <strong>The recordings uploaded using this tool can be accessed by anyone that has your account id and video id. Please take it into account.</strong><p></p>
+                  <p>This tool is experimental and is designed to assist in the analysis of
                     audio files from child care environments to help detect potential abuse. It is not a substitute for
                     professional judgment and should not be relied upon as the sole basis for any decision-making. The tool
                     may produce false positives or false negatives, and its results should be interpreted with caution.
                     Always consult with qualified professionals when dealing with sensitive and potentially harmful
-                    situations.
+                    situations.</p>
                 </div>
-            </p>
-        </div>
+              </div>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <MDBBtn outline color='info' onClick={toggleOpen}>
+              I Understand
+              </MDBBtn>
+            </MDBModalFooter>
+            </MDBModalContent>
+          </MDBModalDialog>
+        </MDBModal>
+      </>
     );
-
-    return (
-        <div style={styles.container}>
-            <div style={styles.iconContainer}>
-            </div>
-            <div style={styles.textContainer}>
-                <p style={styles.text}>
-                    <InfoButtonWithModal buttonTitle={buttonTitle} modalTitle={modalTitle} modalContent={modalContent} closeButtonTitle='I Understand'/>
-                </p>
-            </div>
-        </div>
-    );
-};
+  }
 
 
 export { Disclaimer };

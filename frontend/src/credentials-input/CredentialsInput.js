@@ -1,32 +1,6 @@
 import React from 'react';
 import { HowToModal } from "../HowToModal/howToModal";
-
-const styles = {
-    container: {
-        backgroundColor: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-    },
-    authBox: {
-        backgroundColor: '#1e1e1e',
-        padding: '10px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-    },
-    inputField: {
-        width: '300px',
-        padding: '10px',
-        margin: '10px 0',
-        borderRadius: '4px',
-        border: '1px solid #333',
-        backgroundColor: '#2c2c2c',
-        color: '#ffffff',
-        fontSize: '1em',
-    }
-}
+import { MDBInput } from 'mdb-react-ui-kit';
 
 const CredentialsInput = (props) => {
     const {
@@ -51,48 +25,27 @@ const CredentialsInput = (props) => {
     };
 
     const tokenInput = (
-        <div style={styles.authBox}>
-            <label>Token:</label>
-            <input style={styles.inputField}
-                   type="password"
-                   value={token}
-                   onChange={handleTokenChange}
-                   placeholder="Token"
-            />
-        </div>
+        <MDBInput label="Token" id="token" type="text" onChange={handleTokenChange} value={token} />
     )
 
     const accountInput = (
-        <div style={styles.authBox}>
-            <label>Account ID:</label>
-            <input style={styles.inputField}
-                   type="text"
-                   value={accountId}
-                   onChange={handleAccountIDChange}
-                   placeholder="Account ID"
-            />
-        </div>
+        <MDBInput label="Account ID" id="account_id" type="text" onChange={handleAccountIDChange} value={accountId} />
     )
 
 
     const locationInput = (
-        <div style={styles.authBox}>
-            <label>API location</label>
-            <input style={styles.inputField}
-                   type="text"
-                   value={location}
-                   onChange={handleLocationChange}
-                   placeholder="Type the location for your API"
-            />
-        </div>
+        <MDBInput label="API location" id="api_location" type="text" onChange={handleLocationChange} value={location} />
     )
 
 
     return (
-        <div style={styles.container}>
+        <div>
             {accountInput}
+            <br></br>
             {tokenInput}
+            <br></br>
             {locationInput}
+            <br></br>
             <HowToModal/>
         </div>
     );
