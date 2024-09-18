@@ -3,6 +3,7 @@ import threading
 import time
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from dotenv import dotenv_values
 #from VideoIndexerClient.VI_Client import VideoIndexerService
 #from VideoIndexerClient.Consts import Consts
@@ -12,6 +13,9 @@ from pprint import pprint
 from YAMNet import YAMNetAudioClassifier
 
 app = Flask(__name__)
+
+# Enable CORS for all routes and all origins
+CORS(app)
 
 # Load configuration from .env file
 config = dotenv_values('.env')
@@ -59,6 +63,7 @@ def upload_test():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    print("Upload video request from frontend.")
     # Get data from the request
     file = request.files.get('file')
     video_id = request.form.get('video_id')
