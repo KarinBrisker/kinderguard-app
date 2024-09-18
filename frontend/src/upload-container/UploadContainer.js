@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { EmbedContainer } from '../EmbedContainer/EmbedContainer';
+import { MDBFile } from 'mdb-react-ui-kit';
 import './UploadContainer.css';
 
 const styles = {
@@ -119,11 +120,11 @@ export function UploadContainer(props) {
     );
 
     return (
-        <div className="container" style={styles.container}>
+        <div style={{ padding: '15px' }}>
             {/*{debugInputs}*/}
             {isLoading && <div className="loader"></div>}
             {!isUploaded && !isLoading && (
-                <input style={styles.filePicker} type="file" accept=".wav" onChange={handleFileUpload}/>
+                <MDBFile  accept=".wav" onChange={handleFileUpload}/>
             )}
             {videoId && <EmbedContainer videoId={videoId} accountId={accountId} location={location}/>}
         </div>

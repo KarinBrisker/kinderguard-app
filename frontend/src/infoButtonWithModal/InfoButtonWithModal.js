@@ -1,55 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { styles } from "./styles";
+import {
+    MDBBtn,
+    MDBModal,
+    MDBModalDialog,
+    MDBModalContent,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+  } from 'mdb-react-ui-kit';
 
 const InfoButtonWithModal = (props) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [basicModal, setBasicModal] = useState(false);
 
     const { buttonTitle, modalTitle, modalContent, closeButtonTitle } = props;
 
-    const handleOpenModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleKeyDown = (event) => {
-        if (event.key === 'Escape') {
-            handleCloseModal();
-        }
-    };
-
-    useEffect(() => {
-        if (isModalOpen) {
-            window.addEventListener('keydown', handleKeyDown);
-        } else {
-            window.removeEventListener('keydown', handleKeyDown);
-        }
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [isModalOpen]);
+    const toggleOpen = () => setBasicModal(!basicModal);
 
     const closeButtonText =  closeButtonTitle ?? 'Close'
     return (
-        <div style={styles.container}>
-            <button style={styles.button} onClick={handleOpenModal}>
-                <span style={styles.icon}>{buttonTitle}</span>
-            </button>
-            {isModalOpen && (
-                <div style={styles.modalOverlay}>
-                    <div style={styles.modal}>
-                        <h2 style={styles.modalTitle}>{modalTitle}</h2>
-                        <div styles={styles.modalContent}>
-                            {modalContent}
-                        </div>
-                        <button style={styles.closeButton} onClick={handleCloseModal}>{closeButtonText}</button>
-                    </div>
-                </div>
-            )}
-        </div>
+        <>
+        <MDBBtn onClick={toggleOpen}>{buttonTitle}</MDBBtn>
+        <MDBModal open={basicModal} onClose={() => setBasicModal(false)} tabIndex='-1'>
+        <MDBModalDialog size='xl'>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>{modalTitle}</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={toggleOpen}>{closeButtonText}</MDBBtn>
+            </MDBModalHeader>
+            <MDBModalBody>{modalContent}</MDBModalBody>
+
+            <MDBModalFooter>
+              <MDBBtn color='secondary' onClick={toggleOpen}>
+                Close
+              </MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+       
+        </>
     );
 };
 
