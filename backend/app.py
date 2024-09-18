@@ -9,6 +9,8 @@ from dotenv import dotenv_values
 import os
 from pprint import pprint
 
+from YAMNet import YAMNetAudioClassifier
+
 app = Flask(__name__)
 
 # Load configuration from .env file
