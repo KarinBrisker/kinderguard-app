@@ -234,7 +234,7 @@ export function UploadContainer(props) {
 
                 // Update insights
                 try {
-                    const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos/${data.id}/Index?language=he-IL`, {
+                    const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos/${videoIndex.id}/Index?language=he-IL`, {
                         method: 'PATCH',
                         headers: {
                             'Authorization': `Bearer ${token}`,
