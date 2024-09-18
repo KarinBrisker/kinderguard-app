@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { InfoButtonWithModal } from "../HowToModal/howToModal";
+import React from 'react';
+import { HowToModal } from "../HowToModal/howToModal";
 
 const styles = {
     container: {
@@ -93,7 +93,7 @@ const CredentialsInput = (props) => {
             {accountInput}
             {tokenInput}
             {locationInput}
-            <InfoButtonWithModal/>
+            <HowToModal/>
         </div>
     );
 };
