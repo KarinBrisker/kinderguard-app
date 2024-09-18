@@ -37,10 +37,10 @@ $accountName = "viaccount$name"
 
 
 $resourceId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.VideoIndexer/accounts/$accountName"
-$resource = Get-AzResource -ResourceId $resourceId
+$resource = az resource show --ids $resourceId
 # Extract account ID and location
-$accountId = $resource.Properties.accountId
-$location = $resource.Location
+$accountId = $resource.properties.accountId
+$location = $resource.location
 
 @"
 Video Indexer Account Name= $accountName
