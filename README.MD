@@ -78,6 +78,7 @@ GenerateTokenUrl='https://portal.azure.com/#@israelisraelioutlook.onmicrosoft.co
 ```
 - You can also access this via portal.azure.com -> resource groups -> youralias-rg -> viaccountyouralias -> Management -> Management API -> Access Token Generate 
 
+#### Congrats! you can now use your generated access token + account id (saved in the .env file) as credentials in the Kinderguard app!
 
 ## Contributing
 
