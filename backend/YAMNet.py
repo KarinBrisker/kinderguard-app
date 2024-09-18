@@ -43,13 +43,13 @@ class YAMNetAudioClassifier:
 
     def analyze_audio(self, wav_file_name):
         """Load and analyze audio file."""
-        sample_rate, wav_data = wavfile.read(wav_file_name, 'rb')
-        sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
+        # sample_rate, wav_data = wavfile.read(wav_file_name, 'rb')
+        # sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
 
-        # Show some basic information about the audio
-        duration = len(wav_data) / sample_rate
-        print(f'Sample rate: {sample_rate} Hz')
-        print(f'Total duration: {duration:.2f}s')
+        # # Show some basic information about the audio
+        # duration = len(wav_data) / sample_rate
+        # print(f'Sample rate: {sample_rate} Hz')
+        # print(f'Total duration: {duration:.2f}s')
 
         waveform = wav_data / tf.int16.max
 

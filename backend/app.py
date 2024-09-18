@@ -34,7 +34,6 @@ def background_task(file, video_id, account_id, access_token, location):
     print(f"Video ID: {video_id}, Account ID: {account_id}")
     print(f"Location: {location}, Access Token: {access_token}")
     
-        
     classifier = YAMNetAudioClassifier()
     json_custom_insights = classifier(file)
     patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
