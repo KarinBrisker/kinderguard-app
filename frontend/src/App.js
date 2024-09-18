@@ -4,6 +4,7 @@ import { UploadContainer } from './upload-container/UploadContainer';
 import { CredentialsInput } from "./credentials-input/CredentialsInput";
 import { useState } from "react";
 import { Disclaimer } from "./disclaimer/disclaimer";
+import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
 
 const LOCATION_DEFAULT = 'trial';
 
@@ -36,6 +37,7 @@ function App() {
                                   accountId={accountId} onChangeAccountId={setAccountId}
                                   location={location} onChangeLocation={setLocation}
                 />
+                <VideosFetcher token={token} accountId={accountId} location={location}/>
                 <UploadContainer token={token} accountId={accountId} location={location}/>
             </div>
             </body>
