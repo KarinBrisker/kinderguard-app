@@ -10,6 +10,7 @@ import tensorflow_hub as hub
 from scipy.io import wavfile
 from io import BytesIO
 import soundfile as sf
+print(sf.__version__)
 
 
 class YAMNetAudioClassifier:
@@ -46,6 +47,7 @@ class YAMNetAudioClassifier:
     def analyze_audio(self, file_storage):
         """Load and analyze audio file."""
         # Read the file content from FileStorage object (e.g., Flask's file uploads)
+        file_storage.seek(0)  # Reset file pointer to ensure we can read from the beginning
         file_stream = BytesIO(file_storage.read())  # Convert FileStorage to BytesIO
 
         # Read the audio data and sample rate from the BytesIO stream
@@ -53,8 +55,7 @@ class YAMNetAudioClassifier:
 
         # Ensure the correct sample rate
         sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
-    
-    
+
         # Show some basic information about the audio
         duration = len(wav_data) / sample_rate
         print(f'Sample rate: {sample_rate} Hz')
