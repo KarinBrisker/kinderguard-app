@@ -1,17 +1,20 @@
 import React from 'react';
 
 const ClickableList = (props) => {
-    const { ids, onClickItem } = props;
+    const { videos, onClickItem } = props;
     const handleClick = (id) => {
         console.log(`Clicked ID: ${id}`);
         onClickItem(id)
     };
 
     return (
-        <ul style={styles.list}>
-            {ids.map((id) => (
-                <li key={id} style={styles.listItem} onClick={() => handleClick(id)}>
-                    {id}
+        <ul style={styles.list}>Choose from existing videos:
+            {videos.map((video) => (
+                <li key={video.id} style={styles.listItem} onClick={() => handleClick(video.id)}>
+                    <div>Id: {video.id}</div>
+                    <div>Name: {video?.name}</div>
+                    <div>State: {video?.state}</div>
+                    <div>Timestamp: {video?.created}</div>
                 </li>
             ))}
         </ul>

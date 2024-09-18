@@ -27,23 +27,21 @@ const styles = {
 };
 
 export function VideosFetcher(props) {
-    const { token, accountId, location } = props;
+    const { token, accountId, location, setVideoId } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [isFetched, setIsFetched] = useState(false);
-    const [videoIdsList, setVideoIdsList] = useState([]);
-    const [videoId, setVideoId] = useState(null);
+    const [videosList, setVideosList] = useState([]);
 
     const fetchExistingVideos = async (event) => {
         setIsLoading(true)
         console.log('Fetching existing video ids')
         const data = await fetchVideosFromVideoIndexer();
-        setVideoIdsList(data);
+        setVideosList(data);
         setIsFetched(true)
         setIsLoading(false)
     };
 
     const fetchVideosFromVideoIndexer = async (file) => {
-        debugger
         if (!accountId || !token) {
             console.error('Account ID or token is missing.');
             return;
@@ -67,7 +65,7 @@ export function VideosFetcher(props) {
 
             const data = await response.json();
             console.log('Fetch successful:', data);
-            return data;
+            return data.results;
 
             // Get video status and check if it's processed
             // await fetchVideoStatus(data.id, accountId, token, location);
@@ -77,20 +75,20 @@ export function VideosFetcher(props) {
     }
 
 
-    const videoIdsListElement = videoIdsList?.length > 0 ?
-        <ClickableList ids={videoIdsList} onClickItem={setVideoId}/> : null;
+    const videoIdsListElement = videosList?.length > 0 ?
+        <ClickableList videos={videosList} onClickItem={setVideoId}/> : null;
 
     return (
         <div className="container" style={styles.container}>
             {isLoading && <div className="loader"></div>}
-            {!isFetched && !isLoading && (
+            {!isLoading && (
                 <button style={styles.button} onClick={fetchExistingVideos}>
                     <span style={styles.icon}>Fetch existing videos</span>
                 </button>
             )
             }
             {
-                videoIdsList && videoIdsListElement
+                videoIdsListElement
             }
         </div>
     )

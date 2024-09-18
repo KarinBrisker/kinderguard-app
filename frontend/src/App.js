@@ -21,6 +21,7 @@ function App() {
     const [token, setToken] = useState('');
     const [accountId, setAccountId] = useState('');
     const [location, setLocation] = useState(LOCATION_DEFAULT);
+    const [videoId, setVideoId] = useState(null);
 
     return (
         <div className="App">
@@ -37,8 +38,9 @@ function App() {
                                   accountId={accountId} onChangeAccountId={setAccountId}
                                   location={location} onChangeLocation={setLocation}
                 />
-                <VideosFetcher token={token} accountId={accountId} location={location}/>
-                <UploadContainer token={token} accountId={accountId} location={location}/>
+                <UploadContainer token={token} accountId={accountId} location={location} videoId={videoId} setVideoId={setVideoId}/>
+                <strong>OR</strong>
+                <VideosFetcher token={token} accountId={accountId} location={location} videoId={videoId} setVideoId={setVideoId}/>
             </div>
             </body>
         </div>
