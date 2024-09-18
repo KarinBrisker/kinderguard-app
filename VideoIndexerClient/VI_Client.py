@@ -307,4 +307,55 @@ class VideoIndexerService:
 
         player_widget_url = response.url
         print(f'Got the player widget URL: {player_widget_url}')
-        return player_widget_url
+        return 
+        
+     async def patch_index_async(self, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights"):
+        """Patch the index with custom insights."""
+        
+        params = {
+            'accessToken': access_token
+        }
+
+        url = f'{self.consts.ApiEndpoint}/{self.account["location"]}/Accounts/{self.account["properties"]["accountId"]}/Videos/{video_id}'
+
+        # Prepare the payload
+        wrapper = [
+            {
+                "op": "replace" if custom_insights_already_exists else "add",
+                "value": [custom_insights],
+                "path": embedded_path,
+            }
+        ]
+
+        # Serialize the payload to JSON
+        json_payload = json.dumps(wrapper)
+        headers = {'Content-Type': 'application/json'}
+
+        # Send the PATCH request
+        response = requests.patch(request_url, params=params, data=json_payload, headers=headers)
+        response.raise_for_status()
+
+        """
+        Example for custom insights for sentiment (from audio):
+        custom_insights = {
+            "Name": "SentimentsFromAudio",
+            "DisplayName": "Sentiment (From Audio)",
+            "DisplayType": "Capsule",     # DisplayType: Capsule / CapsuleAndTags (if there is SubType)
+            "Results": [
+                {
+                    "Type": "Anger",   # required - the result from the AI model
+                    "SubType": "Screaming",  # optional if there is a sub-type in this model (example: Type - Car, SubType - Audi)
+                    "Metadata": "Any metadata you want to add",  # optional, if you have additional data
+                    "Instances": [
+                        {
+                            "Start": "00:00:01",
+                            "AdjustedStart": "00:00:01",   # we need each timestamp twice, Start and AdjustedStart
+                            "End": "00:00:05",
+                            "AdjustedEnd": "00:00:05",     # we need each timestamp twice, End and AdjustedEnd
+                            "Confidence": 0.9              # a double value between 0 and 1 
+                        }
+                    ]
+                }
+            ]
+        }
+        """
