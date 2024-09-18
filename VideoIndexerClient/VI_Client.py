@@ -337,25 +337,135 @@ class VideoIndexerService:
 
         """
         Example for custom insights for sentiment (from audio):
-        custom_insights = {
-            "Name": "SentimentsFromAudio",
-            "DisplayName": "Sentiment (From Audio)",
-            "DisplayType": "Capsule",     # DisplayType: Capsule / CapsuleAndTags (if there is SubType)
-            "Results": [
+        custom_insights = [{
+            "value": [
                 {
-                    "Type": "Anger",   # required - the result from the AI model
-                    "SubType": "Screaming",  # optional if there is a sub-type in this model (example: Type - Car, SubType - Audi)
-                    "Metadata": "Any metadata you want to add",  # optional, if you have additional data
-                    "Instances": [
-                        {
-                            "Start": "00:00:01",
-                            "AdjustedStart": "00:00:01",   # we need each timestamp twice, Start and AdjustedStart
-                            "End": "00:00:05",
-                            "AdjustedEnd": "00:00:05",     # we need each timestamp twice, End and AdjustedEnd
-                            "Confidence": 0.9              # a double value between 0 and 1 
-                        }
-                    ]
-                }
-            ]
-        }
+                "name": "yamnet",
+                "displayName": "sound labels",
+                "displayType": "Capsule",
+                "results": [
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.9474669098854065,
+                                "adjustedStart": "00:00:00",
+                                "adjustedEnd": "00:00:01",
+                                "start": "00:00:00",
+                                "end": "00:00:01"
+                            }
+                        ],
+                        "type": "Cat",
+                        "id": 1
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.9592831134796143,
+                                "adjustedStart": "00:00:01",
+                                "adjustedEnd": "00:00:02",
+                                "start": "00:00:01",
+                                "end": "00:00:02"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 2
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.7056165933609009,
+                                "adjustedStart": "00:00:02",
+                                "adjustedEnd": "00:00:03",
+                                "start": "00:00:02",
+                                "end": "00:00:03"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 3
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.7956385016441345,
+                                "adjustedStart": "00:00:03",
+                                "adjustedEnd": "00:00:04",
+                                "start": "00:00:03",
+                                "end": "00:00:04"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 4
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.8624411821365356,
+                                "adjustedStart": "00:00:04",
+                                "adjustedEnd": "00:00:05",
+                                "start": "00:00:04",
+                                "end": "00:00:05"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 5
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.7540692090988159,
+                                "adjustedStart": "00:00:05",
+                                "adjustedEnd": "00:00:06",
+                                "start": "00:00:05",
+                                "end": "00:00:06"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 6
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.29660871624946594,
+                                "adjustedStart": "00:00:06",
+                                "adjustedEnd": "00:00:07",
+                                "start": "00:00:06",
+                                "end": "00:00:07"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 7
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.8998731374740601,
+                                "adjustedStart": "00:00:07",
+                                "adjustedEnd": "00:00:08",
+                                "start": "00:00:07",
+                                "end": "00:00:08"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 8
+                    },
+                    {
+                        "instances": [
+                            {
+                                "confidence": 0.9692713022232056,
+                                "adjustedStart": "00:00:08",
+                                "adjustedEnd": "00:00:09",
+                                "start": "00:00:08",
+                                "end": "00:00:09"
+                            }
+                        ],
+                        "type": "Animal",
+                        "id": 9
+                    }
+                ]
+            }
+            ],
+            "path": "/videos/0/insights/customInsights",
+            "op": "add"
+        }]
+ 
         """
