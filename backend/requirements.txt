@@ -40,7 +40,7 @@ msal-extensions==1.2.0
 nbclient==0.10.0
 nbconvert==7.16.4
 nbformat==5.10.4
-numpy==2.0.0
+numpy==1.23.5
 packaging==24.1
 pandocfilters==1.5.1
 parso==0.8.4
@@ -76,3 +76,6 @@ wcwidth==0.2.13
 webencodings==0.5.1
 Werkzeug==3.0.3
 yarg==0.1.9
+scipy
+tensorflow==2.16.2
+tensorflow-hub==0.16.1

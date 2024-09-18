@@ -4,7 +4,7 @@ import { styles } from "./styles";
 const InfoButtonWithModal = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { buttonTitle, modalTitle, modalContent } = props;
+    const { buttonTitle, modalTitle, modalContent, closeButtonTitle } = props;
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -32,7 +32,7 @@ const InfoButtonWithModal = (props) => {
         };
     }, [isModalOpen]);
 
-
+    const closeButtonText =  closeButtonTitle ?? 'Close'
     return (
         <div style={styles.container}>
             <button style={styles.button} onClick={handleOpenModal}>
@@ -45,7 +45,7 @@ const InfoButtonWithModal = (props) => {
                         <div styles={styles.modalContent}>
                             {modalContent}
                         </div>
-                        <button style={styles.closeButton} onClick={handleCloseModal}>Close</button>
+                        <button style={styles.closeButton} onClick={handleCloseModal}>{closeButtonText}</button>
                     </div>
                 </div>
             )}
