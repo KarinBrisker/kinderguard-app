@@ -1,7 +1,7 @@
 export function EmbedContainer(data) { 
 
     const getPlayerUrl = () => {
-      return `https://www.videoindexer.ai/embed/player/${data.accountId}/${data.videoId}?location=${data.location}`;
+      return `https://www.videoindexer.ai/embed/player/${data.accountId}/${data.videoId}?location=${data.location}&showCaptions=true`;
     };
 
     const getInsightsUrl = () => {

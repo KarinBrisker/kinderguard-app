@@ -224,8 +224,8 @@ export function UploadContainer(props) {
             if (shownWords?.length) {
                 const fullObj = [
                     {
-                        "name": "toxicWords",
-                        "displayName": "Toxic Words",
+                        "name": "suspiciousWords",
+                        "displayName": "Suspicious Words",
                         "displayType": "Capsule",
                         "results":shownWords
                     }
