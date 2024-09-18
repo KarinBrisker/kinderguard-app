@@ -52,8 +52,8 @@ From the root directory of the project, run the following command to build and s
 This will build both the frontend and backend Docker images and start the application.
 
 **Access the Application:**
-The frontend (React app) will be accessible at http://localhost:3000.
-The backend (Python app) will be running on port 5000.
+- The frontend (React app) will be accessible at http://localhost:3000.
+- The backend (Python app) will be running on port 5000.
 
 ## Contributing
 
