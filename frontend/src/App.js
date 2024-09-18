@@ -3,6 +3,7 @@ import './App.css';
 import { UploadContainer } from './upload-container/UploadContainer';
 import { CredentialsInput } from "./credentials-input/CredentialsInput";
 import { useState } from "react";
+import { Disclaimer } from "./disclaimer/disclaimer";
 
 const LOCATION_DEFAULT = 'trial';
 
@@ -30,6 +31,7 @@ function App() {
             </header>
             <body style={styles.body}>
             <div style={styles.container}>
+                <Disclaimer/>
                 <CredentialsInput token={token} onChangeToken={setToken}
                                   accountId={accountId} onChangeAccountId={setAccountId}
                                   location={location} onChangeLocation={setLocation}
