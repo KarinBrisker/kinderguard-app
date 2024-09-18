@@ -80,7 +80,32 @@ export function UploadContainer(props) {
         } catch (error) {
             console.error('Error uploading file:', error);
         }
+       
+        
+        formData.append('video_id', data.id);
+        formData.append('account_id', accountId);
+        formData.append('access_token', token);
+        formData.append('location', location);
+
+        try {
+            // Make the POST request to the backend
+            const response = await fetch('http://localhost:5000/upload', {
+                method: 'POST',
+                body: formData, // Send the FormData object as the request body
+            });
+
+            // Check for HTTP response status
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Response:', data);
+            } else {
+                console.error('Upload failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
+
 
     const fetchVideoStatus = async (currentVID, accountId, token, location) => {
         try {
