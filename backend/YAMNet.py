@@ -41,7 +41,7 @@ class YAMNetAudioClassifier:
         with open(self.class_map_file, 'r') as f:
             return json.load(f)
 
-    def analyze_audio(self, wav_file_name):
+    def analyze_audio(self, wav_data):
         """Load and analyze audio file."""
         # sample_rate, wav_data = wavfile.read(wav_file_name, 'rb')
         # sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
