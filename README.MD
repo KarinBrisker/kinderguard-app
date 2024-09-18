@@ -41,43 +41,19 @@ Laughter, Crying, Music playing, Screaming
 - [VI](https://www.videoindexer.ai/media/library)
 
 ## Setup
+Prerequisites:
+Make sure you have Docker installed on your computer. If Docker is not installed, download and install Docker for your operating system.
 
-### Requirements
+Build and Run the Application:
+From the root directory of the project, run the following command to build and start the containers:
 
-- Python (3.8+)
+docker-compose build && docker-compose up
 
-### Python Setup
+This will build both the frontend and backend Docker images and start the application.
 
-1. Navigate to the [`kinderguard`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fkarin.brisker%2Fkinderguard%2Fkinderguard%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%2201648d0c-ee00-45d8-bedb-99e8ff75446c%22%5D "/Users/karin.brisker/kinderguard/kinderguard") directory:
-
-    ```bash
-    cd kinderguard
-    ```
-
-2. Install the required Python packages:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-## Running the Application
-
-### Python API
-
-1. Navigate to the [`kinderguard`](command:_github.copilot.openRelativePath?%5B%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FUsers%2Fkarin.brisker%2Fkinderguard%2Fkinderguard%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%2201648d0c-ee00-45d8-bedb-99e8ff75446c%22%5D "/Users/karin.brisker/kinderguard/kinderguard") directory:
-
-    ```bash
-    cd kinderguard
-    ```
-
-2. Start the API server:
-
-    ```bash
-    python app.py
-    ```
-
-## Running in Docker
-
-
+Access the Application:
+The frontend (React app) will be accessible at http://localhost:3000.
+The backend (Python app) will be running on port 5000.
 
 ## Contributing
 
