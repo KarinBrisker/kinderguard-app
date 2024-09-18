@@ -61,6 +61,45 @@
         }
       },
       {
+        "type": "Microsoft.Storage/storageAccounts/blobServices",
+        "apiVersion": "2023-05-01",
+        "name": "[concat(variables('storageAccountName'), '/default')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        ],
+        "sku": {
+            "name": "Standard_LRS",
+            "tier": "Standard"
+        },
+        "properties": {
+            "cors": {
+                "corsRules": [
+                    {
+                        "allowedOrigins": [
+                            "*"
+                        ],
+                        "allowedMethods": [
+                            "GET",
+                            "OPTIONS",
+                            "HEAD"
+                        ],
+                        "maxAgeInSeconds": 0,
+                        "exposedHeaders": [
+                            ""
+                        ],
+                        "allowedHeaders": [
+                            ""
+                        ]
+                    }
+                ]
+            },
+            "deleteRetentionPolicy": {
+                "allowPermanentDelete": false,
+                "enabled": false
+            }
+        }
+      },
+      {
         "type": "Microsoft.Authorization/roleAssignments",
         "apiVersion": "2020-04-01-preview",
         "name": "[guid(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), resourceId('Microsoft.VideoIndexer/accounts', parameters('name')), 'VideoIndexerRoleAssignment')]",
