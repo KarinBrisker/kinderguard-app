@@ -109,13 +109,14 @@ def upload_file():
     return jsonify(response), 202
 
 def patch_index_async(account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
-    """Patch the index with custom insights."""
+    print("Patch the index with custom insights.")
     
     params = {
         'accessToken': access_token
     }
     
-    url = f'{apiEndpoint}/{location}/Accounts/{account_id}/Videos/{video_id}'
+    url = f'{apiEndpoint}/{location}/Accounts/{account_id}/Videos/{video_id}/Index'
+    print(url)
 
     # Prepare the payload
     wrapper = [
@@ -132,136 +133,137 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
 
     # Send the PATCH request
     response = requests.patch(url, params=params, data=json_payload, headers=headers)
+    print(response)
     response.raise_for_status()
 
     """
     Example for custom insights for sentiment (from audio):
-    custom_insights = [
-            {
-            "name": "yamnet",
-            "displayName": "sound labels",
-            "displayType": "Capsule",
-            "results": [
+custom_insights = [
+    {
+        "name": "yamnet",
+        "displayName": "sound labels",
+        "displayType": "Capsule",
+        "results": [
+        {
+            "instances": [
                 {
-                    "instances": [
-                        {
-                            "confidence": 0.9474669098854065,
-                            "adjustedStart": "00:00:00",
-                            "adjustedEnd": "00:00:01",
-                            "start": "00:00:00",
-                            "end": "00:00:01"
-                        }
-                    ],
-                    "type": "Cat",
-                    "id": 1
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.9592831134796143,
-                            "adjustedStart": "00:00:01",
-                            "adjustedEnd": "00:00:02",
-                            "start": "00:00:01",
-                            "end": "00:00:02"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 2
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7056165933609009,
-                            "adjustedStart": "00:00:02",
-                            "adjustedEnd": "00:00:03",
-                            "start": "00:00:02",
-                            "end": "00:00:03"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 3
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7956385016441345,
-                            "adjustedStart": "00:00:03",
-                            "adjustedEnd": "00:00:04",
-                            "start": "00:00:03",
-                            "end": "00:00:04"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 4
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.8624411821365356,
-                            "adjustedStart": "00:00:04",
-                            "adjustedEnd": "00:00:05",
-                            "start": "00:00:04",
-                            "end": "00:00:05"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 5
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7540692090988159,
-                            "adjustedStart": "00:00:05",
-                            "adjustedEnd": "00:00:06",
-                            "start": "00:00:05",
-                            "end": "00:00:06"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 6
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.29660871624946594,
-                            "adjustedStart": "00:00:06",
-                            "adjustedEnd": "00:00:07",
-                            "start": "00:00:06",
-                            "end": "00:00:07"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 7
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.8998731374740601,
-                            "adjustedStart": "00:00:07",
-                            "adjustedEnd": "00:00:08",
-                            "start": "00:00:07",
-                            "end": "00:00:08"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 8
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.9692713022232056,
-                            "adjustedStart": "00:00:08",
-                            "adjustedEnd": "00:00:09",
-                            "start": "00:00:08",
-                            "end": "00:00:09"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 9
+                    "confidence": 0.9474669098854065,
+                    "adjustedStart": "00:00:00",
+                    "adjustedEnd": "00:00:01",
+                    "start": "00:00:00",
+                    "end": "00:00:01"
                 }
-            ]
+            ],
+            "type": "Cat",
+            "id": 1
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.9592831134796143,
+                    "adjustedStart": "00:00:01",
+                    "adjustedEnd": "00:00:02",
+                    "start": "00:00:01",
+                    "end": "00:00:02"
+                }
+            ],
+            "type": "Animal",
+            "id": 2
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.7056165933609009,
+                    "adjustedStart": "00:00:02",
+                    "adjustedEnd": "00:00:03",
+                    "start": "00:00:02",
+                    "end": "00:00:03"
+                }
+            ],
+            "type": "Animal",
+            "id": 3
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.7956385016441345,
+                    "adjustedStart": "00:00:03",
+                    "adjustedEnd": "00:00:04",
+                    "start": "00:00:03",
+                    "end": "00:00:04"
+                }
+            ],
+            "type": "Animal",
+            "id": 4
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.8624411821365356,
+                    "adjustedStart": "00:00:04",
+                    "adjustedEnd": "00:00:05",
+                    "start": "00:00:04",
+                    "end": "00:00:05"
+                }
+            ],
+            "type": "Animal",
+            "id": 5
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.7540692090988159,
+                    "adjustedStart": "00:00:05",
+                    "adjustedEnd": "00:00:06",
+                    "start": "00:00:05",
+                    "end": "00:00:06"
+                }
+            ],
+            "type": "Animal",
+            "id": 6
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.29660871624946594,
+                    "adjustedStart": "00:00:06",
+                    "adjustedEnd": "00:00:07",
+                    "start": "00:00:06",
+                    "end": "00:00:07"
+                }
+            ],
+            "type": "Animal",
+            "id": 7
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.8998731374740601,
+                    "adjustedStart": "00:00:07",
+                    "adjustedEnd": "00:00:08",
+                    "start": "00:00:07",
+                    "end": "00:00:08"
+                }
+            ],
+            "type": "Animal",
+            "id": 8
+        },
+        {
+            "instances": [
+                {
+                    "confidence": 0.9692713022232056,
+                    "adjustedStart": "00:00:08",
+                    "adjustedEnd": "00:00:09",
+                    "start": "00:00:08",
+                    "end": "00:00:09"
+                }
+            ],
+            "type": "Animal",
+            "id": 9
         }
-        ]
+    ]
+}
+]
 
     """
 
