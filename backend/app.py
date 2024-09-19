@@ -1,15 +1,24 @@
 import json
 import threading
 import time
+import requests
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from dotenv import dotenv_values
 #from VideoIndexerClient.VI_Client import VideoIndexerService
 #from VideoIndexerClient.Consts import Consts
 import os
 from pprint import pprint
 
+from YAMNet import YAMNetAudioClassifier
+
 app = Flask(__name__)
+
+UPLOAD_FOLDER = '/uploads'
+
+# Enable CORS for all routes and all origins
+CORS(app)
 
 # Load configuration from .env file
 config = dotenv_values('.env')
@@ -28,10 +37,20 @@ def background_task(file, video_id, account_id, access_token, location):
     print(f"Video ID: {video_id}, Account ID: {account_id}")
     print(f"Location: {location}, Access Token: {access_token}")
     
+    try:
+        # Open the file in background task
+        with open(file, 'rb') as file_storage:
+            # Verify the file extension before processing
+            if not file.lower().endswith('.wav'):
+                raise ValueError(f"Incorrect file type: {file}")
+            classifier = YAMNetAudioClassifier()
+            json_custom_insights = classifier(file_storage)
+            patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
+    finally:
+        # Optionally delete the file after processing
+        os.remove(file)
         
-    classifier = YAMNetAudioClassifier()
-    json_custom_insights = classifier(file)
-    patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
+    
 
     print("Background task completed.")
 
@@ -57,6 +76,7 @@ def upload_test():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    print("Upload video request from frontend.")
     # Get data from the request
     file = request.files.get('file')
     video_id = request.form.get('video_id')
@@ -71,10 +91,18 @@ def upload_file():
     if not all([file, video_id, account_id, access_token, location]):
         return jsonify({"error": "Missing required parameters"}), 400
 
+    # Ensure the upload folder exists
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+
+    # Save the file to a temporary location
+    temp_filename = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(temp_filename)
+
     # Start the background task
     thread = threading.Thread(
         target=background_task, 
-        args=(file, video_id, account_id, access_token, location)
+        args=(temp_filename, video_id, account_id, access_token, location)
     )
     thread.start()
     

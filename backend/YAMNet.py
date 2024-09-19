@@ -71,14 +71,15 @@ class YAMNetAudioClassifier:
             top_class = np.argmax(score)
             class_name = self.class_names[top_class]
 
-            if class_name not in self.supported_classes:
+            if class_name.lower() not in self.supported_classes:
                 continue
 
             start_time = i * frame_duration
             end_time = (i + 1) * frame_duration
             formatted_start = f"{int(start_time // 3600):02}:{int((start_time % 3600) // 60):02}:{int(start_time % 60):02}"
             formatted_end = f"{int(end_time // 3600):02}:{int((end_time % 3600) // 60):02}:{int(end_time % 60):02}"
-
+            if formatted_start == formatted_end:
+                continue
             # Prepare the result for this segment
             segment = {
                 "confidence": float(score[top_class]),
