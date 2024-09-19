@@ -16,7 +16,7 @@ const styles = {
 const WikiAPIManagementPortal = () => {
     return (
         <div>
-            <h2 style={styles.title}>API Management portal (Trial / Paid account)</h2>
+            <h2 style={styles.title}>Video Indexer API Portal (Trial or Paid account)</h2>
             <p style={styles.content}>
                 <ol>
                     <li>
