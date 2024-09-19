@@ -84,11 +84,11 @@ export function UploadContainer(props) {
         }
        
         
-        formData.append('video_id', videoId);
-        formData.append('account_id', accountId);
-        formData.append('access_token', token);
-        formData.append('location', location);
-
+       // formData.append('video_id', videoId);
+        // formData.append('account_id', accountId);
+        // formData.append('access_token', token);
+        // formData.append('location', location);
+/*
         try {
             // Make the POST request to the backend
             const response = await fetch('http://localhost:5000/upload', {
@@ -106,6 +106,7 @@ export function UploadContainer(props) {
         } catch (error) {
             console.error('Error:', error);
         }
+            */
     }
 
 
@@ -141,6 +142,12 @@ export function UploadContainer(props) {
 
     const findBadWords = async (videoIndex) =>{
         const badWords = ["טיפש",
+            "חצוף",
+            "חוצפן",
+            "חוצפנית",
+            "תחטוף",
+            "תחטפי",
+            "טיפשון",
             "טיפשון",
             "טיפשה",
             "טיפשים",

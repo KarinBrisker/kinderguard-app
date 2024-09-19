@@ -26,10 +26,11 @@ const WikiAPIManagementPortal = () => {
                         Go to the ‘Get Accounts Authorization’ under the ‘APIs’ tab.
                     </li>
                     <li>
-                        Generate the access token by setting the appropriate parameters and hitting ‘Send’:
+                        Generate the access token with edit permissions by setting the appropriate parameters and hitting ‘Send’:
                         <ul styles={styles.sublist}>
                             <li>Location – ‘trial’ (or for non-trial account enter the region for your account).</li>
                             <li>AccountId - the id of your account (will appear in Video Indexer UI)</li>
+                            <li>allow edit - true</li>
                         </ul>
                     </li>
                 </ol>
