@@ -129,6 +129,7 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
 
     # Serialize the payload to JSON
     json_payload = json.dumps(wrapper)
+    print(f'Payload: {json_payload}')
     headers = {'Content-Type': 'application/json'}
 
     # Send the PATCH request
