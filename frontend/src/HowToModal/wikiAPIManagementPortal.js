@@ -7,6 +7,7 @@ const styles = {
         margin: '0',
         fontSize: '1em',
         color: '#333333',
+        textAlign: 'left'
     },
     sublist: {
         listStyleType: 'lower-alpha'
@@ -20,17 +21,34 @@ const WikiAPIManagementPortal = () => {
             <p style={styles.content}>
                 <ol>
                     <li>
-                        Go to <a href='https://aka.ms/vi-dev-portal'>developer portal</a>. You will be welcomed with the Video Indexer developer portal landing page, just press the ‘Sign-in’ button on the top-right corner of the ‘Get Started’ button, to authenticate.
+                        Create a trial or a paid <a target='_blank' href='https://vi.microsoft.com/' rel="noreferrer">Video
+                        Indexer account</a>
                     </li>
                     <li>
-                        Go to the ‘Get Accounts Authorization’ under the ‘APIs’ tab.
+                        From the Video Indexer website, extract your <strong>Account ID</strong> by clicking on your username in the topbar and copying the ID that appears in the sidebar. Keep your account ID for later.
                     </li>
                     <li>
-                        Generate the access token with edit permissions by setting the appropriate parameters and hitting ‘Send’:
+                        Go to <a target='_blank' href='https://aka.ms/vi-dev-portal' rel="noreferrer">Video Indexer developer portal</a>.
+                    </li>
+                    <li>Press the <strong>Sign-in</strong> button on the top-right
+                        corner of the <strong>Get Started</strong> button, to authenticate.
+                    </li>
+                    <li>
+                        Click on the <strong>APIs</strong> tab.
+                    </li>
+                    <li>
+                        Scroll to <strong>Get Account Access Token</strong> or look it up in the search bar on the left
+                    </li>
+                    <li>
+                        Click on the green button <strong>Try it</strong>
+                    </li>
+                    <li>
+                        Generate the access token with edit permissions by setting the appropriate parameters and
+                        hitting <strong>Send</strong>:
                         <ul styles={styles.sublist}>
-                            <li>Location – ‘trial’ (or for non-trial account enter the region for your account).</li>
-                            <li>AccountId - the id of your account (will appear in Video Indexer UI)</li>
-                            <li>allow edit - true</li>
+                            <li><strong>location</strong>: ‘trial’ (or for non-trial account enter the region for your account).</li>
+                            <li><strong>accountId</strong>:the id of your account (will appear in Video Indexer UI)</li>
+                            <li><strong>allowEdit</strong>: true</li>
                         </ul>
                     </li>
                 </ol>
