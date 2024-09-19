@@ -61,7 +61,7 @@ export function UploadContainer(props) {
         let videoId = null;
 
         try {
-            let response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -77,14 +77,19 @@ export function UploadContainer(props) {
             console.log('Upload successful:', data);
 
             videoId = data.id;
-            console.log(videoId)
-            formData.append('video_id', videoId);
-            formData.append('account_id', accountId);
-            formData.append('access_token', token);
-            formData.append('location', location);
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+       
+        
+        formData.append('video_id', videoId);
+        formData.append('account_id', accountId);
+        formData.append('access_token', token);
+        formData.append('location', location);
 
+        try {
             // Make the POST request to the backend
-            response = await fetch('http://localhost:5000/upload', {
+            const response = await fetch('http://localhost:5000/upload', {
                 method: 'POST',
                 body: formData, // Send the FormData object as the request body
             });
@@ -98,11 +103,14 @@ export function UploadContainer(props) {
             }
 
             // Get video status and check if it's processed
-            await fetchVideoStatus(data.id, accountId, token, location);
+            await fetchVideoStatus(videoId, accountId, token, location);
         } catch (error) {
-            console.error('Error uploading file:', error);
+            console.error('Error:', error);
+
+            // Get video status and check if it's processed even if failed
+            await fetchVideoStatus(videoId, accountId, token, location);
         }
-       
+        
     }
 
 
@@ -138,6 +146,12 @@ export function UploadContainer(props) {
 
     const findBadWords = async (videoIndex) =>{
         const badWords = ["טיפש",
+            "חצוף",
+            "חוצפן",
+            "חוצפנית",
+            "תחטוף",
+            "תחטפי",
+            "טיפשון",
             "טיפשון",
             "טיפשה",
             "טיפשים",
