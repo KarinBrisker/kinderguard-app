@@ -1,0 +1,148 @@
+[
+    {
+        "name": "yamnet",
+        "displayName": "sound labels",
+        "displayType": "Capsule",
+        "results": [
+            {
+                "instances": [
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:00",
+                        "adjustedEnd": "00:00:01",
+                        "start": "00:00:00",
+                        "end": "00:00:01"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:01",
+                        "adjustedEnd": "00:00:02",
+                        "start": "00:00:01",
+                        "end": "00:00:02"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:02",
+                        "adjustedEnd": "00:00:03",
+                        "start": "00:00:02",
+                        "end": "00:00:03"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:03",
+                        "adjustedEnd": "00:00:04",
+                        "start": "00:00:03",
+                        "end": "00:00:04"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:04",
+                        "adjustedEnd": "00:00:05",
+                        "start": "00:00:04",
+                        "end": "00:00:05"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:05",
+                        "adjustedEnd": "00:00:06",
+                        "start": "00:00:05",
+                        "end": "00:00:06"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:06",
+                        "adjustedEnd": "00:00:07",
+                        "start": "00:00:06",
+                        "end": "00:00:07"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:07",
+                        "adjustedEnd": "00:00:08",
+                        "start": "00:00:07",
+                        "end": "00:00:08"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:08",
+                        "adjustedEnd": "00:00:09",
+                        "start": "00:00:08",
+                        "end": "00:00:09"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:09",
+                        "adjustedEnd": "00:00:10",
+                        "start": "00:00:09",
+                        "end": "00:00:10"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:10",
+                        "adjustedEnd": "00:00:11",
+                        "start": "00:00:10",
+                        "end": "00:00:11"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:11",
+                        "adjustedEnd": "00:00:12",
+                        "start": "00:00:11",
+                        "end": "00:00:12"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:12",
+                        "adjustedEnd": "00:00:13",
+                        "start": "00:00:12",
+                        "end": "00:00:13"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:13",
+                        "adjustedEnd": "00:00:14",
+                        "start": "00:00:13",
+                        "end": "00:00:14"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:14",
+                        "adjustedEnd": "00:00:15",
+                        "start": "00:00:14",
+                        "end": "00:00:15"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:15",
+                        "adjustedEnd": "00:00:16",
+                        "start": "00:00:15",
+                        "end": "00:00:16"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:16",
+                        "adjustedEnd": "00:00:17",
+                        "start": "00:00:16",
+                        "end": "00:00:17"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:17",
+                        "adjustedEnd": "00:00:18",
+                        "start": "00:00:17",
+                        "end": "00:00:18"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:18",
+                        "adjustedEnd": "00:00:19",
+                        "start": "00:00:18",
+                        "end": "00:00:19"
+                    }
+                ],
+                "type": "Silence",
+                "id": 1
+            }
+        ]
+    }
+]

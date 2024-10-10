@@ -1,110 +1,93 @@
 import json
 import threading
-import time
-
-from flask import Flask, render_template, request, jsonify
+import logging
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import dotenv_values
-#from VideoIndexerClient.VI_Client import VideoIndexerService
-#from VideoIndexerClient.Consts import Consts
 import os
-from pprint import pprint
+from io import BytesIO
+import tempfile
 
 from YAMNet import YAMNetAudioClassifier
 
 app = Flask(__name__)
-
-# Enable CORS for all routes and all origins
 CORS(app)
+
+# Configure logging with timestamp and log level
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 # Load configuration from .env file
 config = dotenv_values('.env')
 
-# Define constants from the .env file or default values
+def background_task(file_content, video_id, account_id, access_token, location):
+    try:
+        app.logger.info("Started background task...")
+        app.logger.debug(f"Video ID: {video_id}, Account ID: {account_id}")
+        app.logger.debug(f"Location: {location}, Access Token: {access_token}")
 
-# Create Video Indexer Client
-#client = VideoIndexerService(consts)
-# Authenticate
-#client.authenticate_async()
-#client.get_account_async()
+        file_buffer = BytesIO(file_content)  # Store it in a BytesIO object
 
-from io import BytesIO
+        # Initialize the classifier
+        classifier = YAMNetAudioClassifier()
 
-def background_task(file, video_id, account_id, access_token, location):
-    # Simulating a long-running task with a delay
-    print("Started background task...")
-    print(f"Video ID: {video_id}, Account ID: {account_id}")
-    print(f"Location: {location}, Access Token: {access_token}")
-    
-    # Read the file content into memory before passing it to the background task
-    file_content = file.read()  # Read file contents into memory
-    file_buffer = BytesIO(file_content)  # Store it in a BytesIO object
-    
-    # Initialize the classifier
-    classifier = YAMNetAudioClassifier()
-    
-    # Pass the in-memory BytesIO object to the classifier
-    json_custom_insights = classifier(file_buffer)
-    
-    # Proceed with further processing
-    patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
+        # Pass the in-memory BytesIO object to the classifier
+        json_custom_insights = classifier(file_buffer)
 
-    print("Background task completed.")
+        # Proceed with further processing
+        patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
 
-
-@app.route('/upload_test', methods=['GET'])
-def upload_test():
-    # Predefined values for testing
-    file = "dummy_file.mp4"  # Simulated file
-    video_id = "123456"
-    account_id = "account_abc"
-    access_token = "token_xyz"
-    location = "New York"
-
-    # Start background processing in a thread
-    thread = threading.Thread(
-        target=background_task,
-        args=(file, video_id, account_id, access_token, location)
-    )
-    thread.start()
-
-    # Respond immediately to the client
-    response = {'message': 'Background processing started'}
-    return jsonify(response), 202
+        app.logger.info("Background task completed.")
+    except Exception as e:
+        app.logger.error(f"Error in background_task: {e}")
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    print("Upload video request from frontend.")
+    app.logger.info("Upload video request from frontend.")
+
     # Get data from the request
-    file = request.files.get('file')
+    uploaded_file = request.files.get('file')
     video_id = request.form.get('video_id')
     account_id = request.form.get('account_id')
     access_token = request.form.get('access_token')
     location = request.form.get('location')
 
-    # Immediately return a response to the client
-    response = {"status": "Accepted", "message": "File upload started"}
-    
     # Validate the request parameters
-    if not all([file, video_id, account_id, access_token, location]):
+    if not all([uploaded_file, video_id, account_id, access_token, location]):
+        app.logger.warning("Missing required parameters in upload request.")
         return jsonify({"error": "Missing required parameters"}), 400
 
-    # Start the background task
-    thread = threading.Thread(
-        target=background_task, 
-        args=(file, video_id, account_id, access_token, location)
-    )
-    thread.start()
-    
-    return jsonify(response), 202
+    try:
+        # Read file content while the file is still open
+        file_content = uploaded_file.read()
 
-def patch_index_async(account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
+        # Start the background task with file content
+        thread = threading.Thread(
+            target=background_task,
+            args=(file_content, video_id, account_id, access_token, location)
+        )
+        thread.start()
+
+        # Respond immediately to the client
+        response = {"status": "Accepted", "message": "File upload started"}
+        app.logger.info(f"Started background task for video_id: {video_id}")
+        return jsonify(response), 202
+
+    except Exception as e:
+        app.logger.error(f"Error during file upload: {e}")
+        return jsonify({"error": "Internal server error"}), 500
+
+def patch_index_async(account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str = "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
     """Patch the index with custom insights."""
-    
+    import requests  # Ensure requests is imported here
+
     params = {
         'accessToken': access_token
     }
-    
+
     url = f'{apiEndpoint}/{location}/Accounts/{account_id}/Videos/{video_id}'
 
     # Prepare the payload
@@ -120,144 +103,18 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
     json_payload = json.dumps(wrapper)
     headers = {'Content-Type': 'application/json'}
 
-    # Send the PATCH request
-    response = requests.patch(url, params=params, data=json_payload, headers=headers)
-    response.raise_for_status()
+    try:
+        # Send the PATCH request
+        response = requests.patch(url, params=params, data=json_payload, headers=headers)
+        response.raise_for_status()
+        app.logger.info(f"Successfully patched index for video_id: {video_id}")
+    except requests.exceptions.RequestException as e:
+        app.logger.error(f"Error patching index for video_id {video_id}: {e}")
+        # Optionally, handle retries or other logic here
 
-    """
-    Example for custom insights for sentiment (from audio):
-    custom_insights = [
-            {
-            "name": "yamnet",
-            "displayName": "sound labels",
-            "displayType": "Capsule",
-            "results": [
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.9474669098854065,
-                            "adjustedStart": "00:00:00",
-                            "adjustedEnd": "00:00:01",
-                            "start": "00:00:00",
-                            "end": "00:00:01"
-                        }
-                    ],
-                    "type": "Cat",
-                    "id": 1
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.9592831134796143,
-                            "adjustedStart": "00:00:01",
-                            "adjustedEnd": "00:00:02",
-                            "start": "00:00:01",
-                            "end": "00:00:02"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 2
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7056165933609009,
-                            "adjustedStart": "00:00:02",
-                            "adjustedEnd": "00:00:03",
-                            "start": "00:00:02",
-                            "end": "00:00:03"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 3
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7956385016441345,
-                            "adjustedStart": "00:00:03",
-                            "adjustedEnd": "00:00:04",
-                            "start": "00:00:03",
-                            "end": "00:00:04"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 4
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.8624411821365356,
-                            "adjustedStart": "00:00:04",
-                            "adjustedEnd": "00:00:05",
-                            "start": "00:00:04",
-                            "end": "00:00:05"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 5
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.7540692090988159,
-                            "adjustedStart": "00:00:05",
-                            "adjustedEnd": "00:00:06",
-                            "start": "00:00:05",
-                            "end": "00:00:06"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 6
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.29660871624946594,
-                            "adjustedStart": "00:00:06",
-                            "adjustedEnd": "00:00:07",
-                            "start": "00:00:06",
-                            "end": "00:00:07"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 7
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.8998731374740601,
-                            "adjustedStart": "00:00:07",
-                            "adjustedEnd": "00:00:08",
-                            "start": "00:00:07",
-                            "end": "00:00:08"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 8
-                },
-                {
-                    "instances": [
-                        {
-                            "confidence": 0.9692713022232056,
-                            "adjustedStart": "00:00:08",
-                            "adjustedEnd": "00:00:09",
-                            "start": "00:00:08",
-                            "end": "00:00:09"
-                        }
-                    ],
-                    "type": "Animal",
-                    "id": 9
-                }
-            ]
-        }
-        ]
-
-    """
-
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
-    return {} #render_template('index.html')
+    return jsonify({"message": "Hello from the backend!"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000, debug=True)
