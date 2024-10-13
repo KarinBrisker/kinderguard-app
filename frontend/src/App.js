@@ -7,6 +7,7 @@ import { CredentialsInput } from "./credentials-input/CredentialsInput";
 import { useState } from "react";
 import { Disclaimer } from "./disclaimer/disclaimer";
 import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
+import { Footer } from "./footer/footer";
 
 const LOCATION_DEFAULT = 'trial';
 
@@ -46,6 +47,7 @@ function App() {
                 <VideosFetcher token={token} accountId={accountId} location={location} videoId={videoId} setVideoId={setVideoId}/>
             </div>
             </body>
+            <Footer />
         </div>
     );
 }
