@@ -4,12 +4,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import './App.css';
 import { UploadContainer } from './upload-container/UploadContainer';
 import { CredentialsInput } from "./credentials-input/CredentialsInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Disclaimer } from "./disclaimer/disclaimer";
 import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
 import { Footer } from "./footer/footer";
 
-const LOCATION_DEFAULT = 'trial';
 
 const styles = {
     body: {
@@ -23,8 +22,22 @@ const styles = {
 function App() {
     const [token, setToken] = useState('');
     const [accountId, setAccountId] = useState('');
-    const [location, setLocation] = useState(LOCATION_DEFAULT);
+    const [location, setLocation] = useState('');
     const [videoId, setVideoId] = useState(null);
+
+    // prevent reload of the page since it will delete all the credentials
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+            event.returnValue = ''; // Standard way to trigger the confirmation dialog
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div className="App">
