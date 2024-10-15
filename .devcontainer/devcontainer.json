@@ -1,0 +1,20 @@
+{
+    "name": "Kinderguard Dev Container",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+    ],
+    "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker"
+    ],
+    "postCreateCommand": "pip install -r backend/requirements.txt",
+    "remoteUser": "root",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "overrideCommand": false
+}

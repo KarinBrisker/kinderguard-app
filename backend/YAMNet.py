@@ -10,6 +10,7 @@ import tensorflow_hub as hub
 from scipy.io import wavfile
 from io import BytesIO
 import soundfile as sf
+
 print(sf.__version__)
 
 
@@ -44,17 +45,13 @@ class YAMNetAudioClassifier:
         with open(self.class_map_file, 'r') as f:
             return json.load(f)
         
-    def analyze_audio(self, file_stream):
-        """Load and analyze audio file."""
-        # file_stream is already a BytesIO object passed from the background task
-        
-        # Read the audio data and sample rate from the BytesIO stream
+    def analyze_audio(self, file_stream, sample_rate):        
+        """Analyze the audio waveform."""
+        # Ensure the correct sample rate
         wav_data, sample_rate = sf.read(file_stream)
 
-        # Ensure the correct sample rate
-        sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
+        sample_rate, waveform = self.ensure_sample_rate(sample_rate, waveform)
 
-        # Show some basic information about the audio
         duration = len(wav_data) / sample_rate
         print(f'Sample rate: {sample_rate} Hz')
         print(f'Total duration: {duration:.2f}s')
@@ -69,7 +66,6 @@ class YAMNetAudioClassifier:
         print(f'The main sound is: {inferred_class}')
 
         return scores_np
-
 
     def generate_insights(self, scores):
         """Generate and save insights based on the model's scores."""
@@ -133,15 +129,70 @@ class YAMNetAudioClassifier:
             json.dump(insights_output, f, indent=4)
         print(f"Results saved to {output_file}")
 
-    def __call__(self, wav_file_name, output_file='yamnet_custom_insights_output.json'):
+    def __call__(self, wav_file_name, sample_rate, output_file='yamnet_custom_insights_output.json'):
         """Process the audio file, generate insights, and save them."""
         # Analyze the audio file
-        scores = self.analyze_audio(wav_file_name)
+        scores = self.analyze_audio(wav_file_name, sample_rate)
         # Generate insights from the scores
         insights = self.generate_insights(scores)
         # Save the insights to a JSON file
         self.save_insights(insights, output_file)
+  
+    def generate_insights(self, scores):
+        """Generate and save insights based on the model's scores."""
+        frame_duration = 0.975
+        grouped_results = {}
 
+        for i, score in enumerate(scores):
+            top_class = np.argmax(score)
+            class_name = self.class_names[top_class]
+
+            if class_name.lower() not in self.supported_classes:
+                continue
+
+            start_time = i * frame_duration
+            end_time = (i + 1) * frame_duration
+            formatted_start = f"{int(start_time // 3600):02}:{int((start_time % 3600) // 60):02}:{int(start_time % 60):02}"
+            formatted_end = f"{int(end_time // 3600):02}:{int((end_time % 3600) // 60):02}:{int(end_time % 60):02}"
+            if formatted_start == formatted_end:
+                continue
+            # Prepare the result for this segment
+            segment = {
+                "confidence": float(score[top_class]),
+                "adjustedStart": formatted_start,
+                "adjustedEnd": formatted_end,
+                "start": formatted_start,
+                "end": formatted_end
+            }
+
+            # Group by class name
+            if class_name not in grouped_results:
+                grouped_results[class_name] = {
+                    "id": i,  # Assign the first instance ID
+                    "instances": []
+                }
+
+            grouped_results[class_name]["instances"].append(segment)
+
+        # Format the output into the required structure
+        results = []
+        for class_name, data in grouped_results.items():
+            results.append({
+                "instances": data["instances"],
+                "type": class_name,  # Label for this class
+                "id": data["id"]  # The ID of the first occurrence of this class
+            })
+
+        insights_output = [
+            {
+                "name": "yamnet",
+                "displayName": "sound labels",
+                "displayType": "Capsule",
+                "results": results
+            }
+        ]
+
+        return insights_output
 
 # Example usage
 if __name__ == "__main__":

@@ -1,20 +1,16 @@
-# Use an official Node.js image as the base image
-FROM --platform=linux/arm64 node:18-alpine
+FROM node:14-slim
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to leverage Docker cache
-COPY package.json package-lock.json ./
-
-# Install dependencies
+# Install frontend dependencies
+COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the frontend code
 COPY . .
 
-# Expose the port the app will run on
+# Expose the frontend port
 EXPOSE 3000
 
-# Start the React app
+# Run the frontend server
 CMD ["npm", "start"]

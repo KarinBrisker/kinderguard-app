@@ -5,10 +5,10 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import dotenv_values
 import os
+import librosa
 from io import BytesIO
-import tempfile
-
-from YAMNet import YAMNetAudioClassifier
+import numpy as np
+from YAMNet import YAMNetAudioClassifier  # Ensure this module is correctly implemented
 
 app = Flask(__name__)
 CORS(app)
@@ -23,26 +23,33 @@ logging.basicConfig(
 # Load configuration from .env file
 config = dotenv_values('.env')
 
+
+import librosa
+import numpy as np
+from io import BytesIO
+
 def background_task(file_content, video_id, account_id, access_token, location):
     try:
         app.logger.info("Started background task...")
         app.logger.debug(f"Video ID: {video_id}, Account ID: {account_id}")
         app.logger.debug(f"Location: {location}, Access Token: {access_token}")
 
-        file_buffer = BytesIO(file_content)  # Store it in a BytesIO object
+        # Load audio using librosa
+        waveform, sr = librosa.load(BytesIO(file_content), sr=None, mono=True)
 
         # Initialize the classifier
         classifier = YAMNetAudioClassifier()
 
-        # Pass the in-memory BytesIO object to the classifier
-        json_custom_insights = classifier(file_buffer)
+        # Get insights by passing waveform and sample rate
+        classifier(waveform, sr)  # This will save insights to JSON
 
-        # Proceed with further processing
-        patch_index_async(account_id, location, video_id, access_token, json_custom_insights)
+        # Proceed with further processing if needed
+        patch_index_async(account_id, location, video_id, access_token, {"main_sound": "Sample"})
 
         app.logger.info("Background task completed.")
     except Exception as e:
         app.logger.error(f"Error in background_task: {e}")
+        
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -50,16 +57,21 @@ def upload_file():
 
     # Get data from the request
     uploaded_file = request.files.get('file')
-    video_id = request.form.get('video_id')
+    video_id = request.form.get('video_id', "0")
     account_id = request.form.get('account_id')
     access_token = request.form.get('access_token')
     location = request.form.get('location')
+
+    # Log received parameters
+    app.logger.debug(f"Received video_id: {video_id}")
+    app.logger.debug(f"Received account_id: {account_id}")
+    app.logger.debug(f"Received access_token: {access_token}")
+    app.logger.debug(f"Received location: {location}")
 
     # Validate the request parameters
     if not all([uploaded_file, video_id, account_id, access_token, location]):
         app.logger.warning("Missing required parameters in upload request.")
         return jsonify({"error": "Missing required parameters"}), 400
-
     try:
         # Read file content while the file is still open
         file_content = uploaded_file.read()
