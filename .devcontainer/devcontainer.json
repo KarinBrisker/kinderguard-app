@@ -5,7 +5,8 @@
         "context": ".."
     },
     "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+        "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
     ],
     "extensions": [
         "ms-python.python",
@@ -16,5 +17,6 @@
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },
-    "overrideCommand": false
+    "overrideCommand": false,
+    "workspaceFolder": "/workspace"
 }

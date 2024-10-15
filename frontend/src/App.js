@@ -9,6 +9,9 @@ import { Disclaimer } from "./disclaimer/disclaimer";
 import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
 import { Footer } from "./footer/footer";
 
+console.log('Frontend started...');
+
+// נסה גם לבדוק את הפלט בדפדפן בלשונית ה-Network
 
 const styles = {
     body: {

@@ -10,8 +10,13 @@ import tensorflow_hub as hub
 from scipy.io import wavfile
 from io import BytesIO
 import soundfile as sf
+from config import app  # במקום לייבא מתוך app.py
+import logging
 
-print(sf.__version__)
+logging.basicConfig(level=logging.DEBUG)
+
+
+app.logger.info(sf.__version__)
 
 
 class YAMNetAudioClassifier:
@@ -53,8 +58,8 @@ class YAMNetAudioClassifier:
         sample_rate, waveform = self.ensure_sample_rate(sample_rate, waveform)
 
         duration = len(wav_data) / sample_rate
-        print(f'Sample rate: {sample_rate} Hz')
-        print(f'Total duration: {duration:.2f}s')
+        app.logger.info(f'Sample rate: {sample_rate} Hz')
+        app.logger.info(f'Total duration: {duration:.2f}s')
 
         waveform = wav_data / tf.int16.max
 
@@ -63,7 +68,7 @@ class YAMNetAudioClassifier:
         scores_np = scores.numpy()
         spectrogram_np = spectrogram.numpy()
         inferred_class = self.class_names[scores_np.mean(axis=0).argmax()]
-        print(f'The main sound is: {inferred_class}')
+        app.logger.info(f'The main sound is: {inferred_class}')
 
         return scores_np
 
@@ -127,7 +132,7 @@ class YAMNetAudioClassifier:
         """Save insights to a JSON file."""
         with open(output_file, 'w') as f:
             json.dump(insights_output, f, indent=4)
-        print(f"Results saved to {output_file}")
+        app.logger.info(f"Results saved to {output_file}")
 
     def __call__(self, wav_file_name, sample_rate, output_file='yamnet_custom_insights_output.json'):
         """Process the audio file, generate insights, and save them."""

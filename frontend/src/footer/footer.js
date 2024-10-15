@@ -12,7 +12,7 @@ export function Footer() {
                 <section className=''>
                     <p className='d-flex justify-content-center align-items-center'>
                         <span className='me-3'>We'd love to connect with you. To ask for more features, add new toxic words, or just connect with us</span>
-                        <MDBBtn size='lg' type='button' outline color="light" rounded href='https://forms.gle/L4uaMaUCuopHdNEx9' target='_blank'>
+                        <MDBBtn size='lg' type='button' outline color="light" rounded href='https://forms.gle/L4uaMaUCuopHdNEx9' target='_blank' rel="noreferrer">
                             Click here!
                         </MDBBtn>
                     </p>
@@ -21,7 +21,7 @@ export function Footer() {
 
             <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
                 © 2024 Copyright:
-                <a className='text-white' href='https://forms.gle/L4uaMaUCuopHdNEx9' target='_blank'>
+                <a className='text-white' href='https://forms.gle/L4uaMaUCuopHdNEx9' target='_blank' rel="noreferrer">
                     Kinderguard's team
                 </a>
             </div>

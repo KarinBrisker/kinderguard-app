@@ -10,9 +10,10 @@ import os
 import librosa
 from io import BytesIO
 import numpy as np
-from YAMNet import YAMNetAudioClassifier  # Ensure this module is correctly implemented
 
-app = Flask(__name__)
+from config import app  # יבוא במקום מתוך YAMNet
+from YAMNet import YAMNetAudioClassifier
+
 
 # Constants and configurations
 UPLOAD_FOLDER = '/uploads'

@@ -18,14 +18,14 @@ const WikiAzurePortal = () => {
             <p style={styles.content}>
                 <ol>
                     <li>
-                        <a target='_blank' href='https://www.osgwiki.com/wiki/Azure_Credit'>Make sure</a> you have a
+                        <a target='_blank' rel="noreferrer" href='https://www.osgwiki.com/wiki/Azure_Credit'>Make sure</a> you have a
                         personal Microsoft account, associated with your FTE Microsoft account
                         in order to get free monthly Azure credits
                     </li>
                     <li>
-                        Download <a target='_blank'
+                        Download <a target='_blank' rel="noreferrer"
                                                              href='https://github.com/KarinBrisker/kinderguard-app/blob/main/setup.ps1'>this
-                        script</a> and <a target='_blank'
+                        script</a> and <a target='_blank' rel="noreferrer"
                                           href='https://github.com/KarinBrisker/kinderguard-app/blob/main/template.json'>this
                         template</a> from
                         GitHub.

@@ -14,4 +14,5 @@ WORKDIR /workspace
 
 USER root
 
-CMD ["bash"]
+# Keep the container running
+CMD ["tail", "-f", "/dev/null"]

@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Install frontend dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm install && apt-get update && apt-get install -y curl wget iputils-ping
 
 # Copy the frontend code
 COPY . .
