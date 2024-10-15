@@ -25,16 +25,16 @@ const CredentialsInput = (props) => {
     };
 
     const tokenInput = (
-        <MDBInput label="Token" id="token" type="text" onChange={handleTokenChange} value={token} />
+        <MDBInput autoComplete="on" name='user[token]' label="Token" id="token" type="text" onChange={handleTokenChange} value={token} />
     )
 
     const accountInput = (
-        <MDBInput label="Account ID" id="account_id" type="text" onChange={handleAccountIDChange} value={accountId} />
+        <MDBInput autoComplete="on" name='user[account]' label="Account ID" id="account_id" type="text" onChange={handleAccountIDChange} value={accountId} />
     )
 
 
     const locationInput = (
-        <MDBInput label="API location" id="api_location" type="text" onChange={handleLocationChange} value={location} />
+        <MDBInput autoComplete="on" name='user[location]' label="API location" id="api_location" type="text" onChange={handleLocationChange} value={location} />
     )
 
 

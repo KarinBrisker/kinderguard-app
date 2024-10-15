@@ -77,8 +77,6 @@ export function UploadContainer(props) {
             console.log('Upload successful:', data);
 
             videoId = data.id;
-            // Get video status and check if it's processed
-            await fetchVideoStatus(data.id, accountId, token, location);
         } catch (error) {
             console.error('Error uploading file:', error);
         }
@@ -103,9 +101,16 @@ export function UploadContainer(props) {
             } else {
                 console.error('Upload failed:', response.statusText);
             }
+
+            // Get video status and check if it's processed
+            await fetchVideoStatus(videoId, accountId, token, location);
         } catch (error) {
             console.error('Error:', error);
+
+            // Get video status and check if it's processed even if failed
+            await fetchVideoStatus(videoId, accountId, token, location);
         }
+        
     }
 
 
@@ -141,6 +146,12 @@ export function UploadContainer(props) {
 
     const findBadWords = async (videoIndex) =>{
         const badWords = ["טיפש",
+            "חצוף",
+            "חוצפן",
+            "חוצפנית",
+            "תחטוף",
+            "תחטפי",
+            "טיפשון",
             "טיפשון",
             "טיפשה",
             "טיפשים",
