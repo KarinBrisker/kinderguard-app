@@ -12,6 +12,12 @@ import os
 from pprint import pprint
 
 from YAMNet import YAMNetAudioClassifier
+import logging
+import requests
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
+
 
 app = Flask(__name__)
 
@@ -109,16 +115,20 @@ def upload_file():
     return jsonify(response), 202
 
 def patch_index_async(account_id: str, location: str, video_id: str, access_token: str, custom_insights: dict, custom_insights_already_exists: bool = False, embedded_path: str =  "/videos/0/insights/customInsights", apiEndpoint: str = 'https://api.videoindexer.ai'):
-    print("Patch the index with custom insights.")
+    logger.info("Patching the index with custom insights.")
     
+    if not custom_insights:
+        logger.warning("Custom insights are empty, skipping the request.")
+        return
+
+    logger.info(f"Custom insights: {custom_insights}")
     params = {
         'accessToken': access_token
     }
     
     url = f'{apiEndpoint}/{location}/Accounts/{account_id}/Videos/{video_id}/Index'
-    print(url)
+    logger.info(f'URL: {url}')
 
-    # Prepare the payload
     wrapper = [
         {
             "op": "replace" if custom_insights_already_exists else "add",
@@ -126,16 +136,18 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
             "path": embedded_path,
         }
     ]
-
-    # Serialize the payload to JSON
-    json_payload = json.dumps(wrapper)
-    print(f'Payload: {json_payload}')
+    
     headers = {'Content-Type': 'application/json'}
 
-    # Send the PATCH request
-    response = requests.patch(url, params=params, data=json_payload, headers=headers)
-    print(response)
-    response.raise_for_status()
+    try:
+        response = requests.patch(url, params=params, json=wrapper, headers=headers)
+        logger.info(f'Status Code: {response.status_code}')
+        if not response.ok:
+            logger.error(f'Response Text: {response.text}')
+        response.raise_for_status()
+        logger.info(f"Successfully patched the video {video_id}.")
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Error patching index for video {video_id}: {e}")
 
     """
     Example for custom insights for sentiment (from audio):

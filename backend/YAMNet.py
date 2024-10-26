@@ -1,5 +1,3 @@
-# The `YAMNetAudioClassifier` class is a Python class that uses TensorFlow and TensorFlow Hub to
-# analyze audio files and generate insights about the sound labels present in the audio.
 import csv
 import json
 
@@ -51,6 +49,11 @@ class YAMNetAudioClassifier:
         print(f'Sample rate: {sample_rate} Hz')
         print(f'Total duration: {duration:.2f}s')
 
+        # Convert stereo to mono if needed
+        if len(wav_data.shape) == 2:
+            print("Converting stereo to mono...")
+            wav_data = np.mean(wav_data, axis=1)
+
         waveform = wav_data / tf.int16.max
 
         # Run the model, check the output
@@ -78,8 +81,11 @@ class YAMNetAudioClassifier:
             end_time = (i + 1) * frame_duration
             formatted_start = f"{int(start_time // 3600):02}:{int((start_time % 3600) // 60):02}:{int(start_time % 60):02}"
             formatted_end = f"{int(end_time // 3600):02}:{int((end_time % 3600) // 60):02}:{int(end_time % 60):02}"
+            
+            # Ensure non-zero time intervals
             if formatted_start == formatted_end:
                 continue
+
             # Prepare the result for this segment
             segment = {
                 "confidence": float(score[top_class]),
@@ -112,10 +118,13 @@ class YAMNetAudioClassifier:
                 "name": "yamnet",
                 "displayName": "sound labels",
                 "displayType": "Capsule",
-                "results": results
+                "results": results  # Here `results` is a list of dictionaries
             }
         ]
 
+        # Add a debug print to see the structure of `insights_output`
+        print(json.dumps(insights_output, indent=4))
+        
         return insights_output
 
     def save_insights(self, insights_output, output_file='yamnet_custom_insights_output.json'):
@@ -132,6 +141,7 @@ class YAMNetAudioClassifier:
         insights = self.generate_insights(scores)
         # Save the insights to a JSON file
         self.save_insights(insights, output_file)
+        return insights
 
 
 # Example usage

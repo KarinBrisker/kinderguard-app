@@ -54,14 +54,15 @@ export function UploadContainer(props) {
             console.error('Account ID or token is missing.');
             return;
         }
-
+        // Add a unique timestamp to the file name to avoid conflicts
+        const uniqueFileName = `${Date.now()}_${file.name}`;
         // Create a from data from the file
         const formData = new FormData();
         formData.append('file', file);
         let videoId = null;
 
         try {
-            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${uniqueFileName}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -244,12 +245,13 @@ export function UploadContainer(props) {
             ];
 
             const shownWords = [];
+            const transcripts = videoIndex?.videos?.[0]?.insights?.transcript || [];
 
             badWords.forEach((word, index) => {
-                const results = videoIndex?.videos[0].insights?.transcript.filter(transcript => transcript?.text.includes(word));
+                const results = transcripts.filter(transcript => transcript?.text.includes(word));
                 let instances = [];
                 results.forEach(element => {
-                    instances = [...instances, ...element.instances]
+                    instances = [...instances, ...element.instances];
                 });
                 if (instances.length) {
                     shownWords.push({
