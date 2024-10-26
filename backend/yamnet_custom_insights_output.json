@@ -1,0 +1,110 @@
+[
+    {
+        "name": "yamnet",
+        "displayName": "sound labels",
+        "displayType": "Capsule",
+        "results": [
+            {
+                "instances": [
+                    {
+                        "confidence": 0.3811883330345154,
+                        "adjustedStart": "00:00:00",
+                        "adjustedEnd": "00:00:01",
+                        "start": "00:00:00",
+                        "end": "00:00:01"
+                    },
+                    {
+                        "confidence": 0.6187617778778076,
+                        "adjustedStart": "00:00:01",
+                        "adjustedEnd": "00:00:02",
+                        "start": "00:00:01",
+                        "end": "00:00:02"
+                    },
+                    {
+                        "confidence": 0.29739224910736084,
+                        "adjustedStart": "00:00:02",
+                        "adjustedEnd": "00:00:03",
+                        "start": "00:00:02",
+                        "end": "00:00:03"
+                    }
+                ],
+                "type": "Vehicle",
+                "id": 1
+            },
+            {
+                "instances": [
+                    {
+                        "confidence": 0.25882601737976074,
+                        "adjustedStart": "00:00:03",
+                        "adjustedEnd": "00:00:04",
+                        "start": "00:00:03",
+                        "end": "00:00:04"
+                    }
+                ],
+                "type": "Slam",
+                "id": 4
+            },
+            {
+                "instances": [
+                    {
+                        "confidence": 0.2261115163564682,
+                        "adjustedStart": "00:00:04",
+                        "adjustedEnd": "00:00:05",
+                        "start": "00:00:04",
+                        "end": "00:00:05"
+                    },
+                    {
+                        "confidence": 0.33779260516166687,
+                        "adjustedStart": "00:00:05",
+                        "adjustedEnd": "00:00:06",
+                        "start": "00:00:05",
+                        "end": "00:00:06"
+                    }
+                ],
+                "type": "Music",
+                "id": 5
+            },
+            {
+                "instances": [
+                    {
+                        "confidence": 0.6220436096191406,
+                        "adjustedStart": "00:00:06",
+                        "adjustedEnd": "00:00:07",
+                        "start": "00:00:06",
+                        "end": "00:00:07"
+                    },
+                    {
+                        "confidence": 0.9999999403953552,
+                        "adjustedStart": "00:00:07",
+                        "adjustedEnd": "00:00:08",
+                        "start": "00:00:07",
+                        "end": "00:00:08"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:08",
+                        "adjustedEnd": "00:00:09",
+                        "start": "00:00:08",
+                        "end": "00:00:09"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:09",
+                        "adjustedEnd": "00:00:10",
+                        "start": "00:00:09",
+                        "end": "00:00:10"
+                    },
+                    {
+                        "confidence": 1.0,
+                        "adjustedStart": "00:00:10",
+                        "adjustedEnd": "00:00:11",
+                        "start": "00:00:10",
+                        "end": "00:00:11"
+                    }
+                ],
+                "type": "Silence",
+                "id": 7
+            }
+        ]
+    }
+]
