@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import { ClickableList } from "./ClickableList/ClickableList";
 import {
-    MDBBtn,
-    MDBModal,
-    MDBModalDialog,
-    MDBModalContent,
-    MDBModalHeader,
-    MDBModalTitle,
-    MDBModalBody,
-    MDBModalFooter,
-    MDBInput,
+    MDBBtn
   } from 'mdb-react-ui-kit';
 
 export function VideosFetcher(props) {

@@ -1,36 +1,43 @@
 export const styles = {
     container: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: '10px 20px',
-        backgroundColor: '#ffcc00',
-        borderRadius: '5px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        fontFamily: 'Arial, sans-serif',
-        maxWidth: '600px',
-        margin: '20px auto',
+      /* Main container styling with padding and shadow */
+      display: 'flex',
+      alignItems: 'center',
+      padding: '10px 20px',
+      backgroundColor: '#ffcc00', /* Yellow background */
+      borderRadius: '5px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+      fontFamily: 'Arial, sans-serif',
+      maxWidth: '600px',
+      margin: '20px auto',
     },
     iconContainer: {
-        marginRight: '10px',
+      /* Spacing to the right of the icon */
+      marginRight: '10px',
     },
     warningIcon: {
-        fontSize: '1.5em',
-        color: '#d9534f',
+      /* Red color for the warning icon */
+      fontSize: '1.5em',
+      color: '#d9534f',
     },
     textContainer: {
-        flex: 1,
+      /* Flex property to fill remaining space */
+      flex: 1,
     },
     text: {
-        margin: 0,
-        fontSize: '1em',
-        color: '#333333',
+      /* Basic text styling */
+      margin: 0,
+      fontSize: '1em',
+      color: '#333333',
     },
     closeContainer: {
-        marginLeft: '10px',
-        cursor: 'pointer',
+      /* Close button styling with cursor pointer */
+      marginLeft: '10px',
+      cursor: 'pointer',
     },
     closeIcon: {
-        fontSize: '1.5em',
-        color: '#333333',
+      /* Close icon color */
+      fontSize: '1.5em',
+      color: '#333333',
     }
-};
+  };

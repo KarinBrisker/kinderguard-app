@@ -1,14 +1,48 @@
 .App {
   text-align: center;
-  background-color: #282c34;
-  height: 100vh;
-  color: #ffffff; /* Bright text */
-  font-size: 1.5em; /* Medium-high font size */
+  background: linear-gradient(135deg, #1d3557, #457b9d, #a8dadc);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.5em;
+  padding: 20px;
 }
 
+.container {
+  /* background-color: #ffffff; */
+  border-radius: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+  padding: 30px;
+  max-width: 10000px;
+  width: 100%;
+}
+
+button {
+  background: linear-gradient(90deg, #1d3557, #457b9d);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 3em;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #457b9d, #1d3557);
+}
+
+
 .App-logo {
-  height: 20vmin;
+  height: 15vmin;
   pointer-events: none;
+  margin-bottom: 20px;
 }
 
 .App-header {
@@ -16,24 +50,30 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  border: 2px solid black;
+  color: #ffffff;
 }
 
-.App-link {
-  color: #61dafb;
+input[type="text"] {/* ריווח מהקצוות */
+  width: calc(100% - 20px); 
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Footer styles */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(10, 66, 117, 0.8); /* רקע שקוף קלות */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-family: Arial, sans-serif;
+  z-index: 10;
 }
 
 body {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  padding-bottom: 175px; /* מרווח בתחתית כדי שהפוטר לא יסתיר תוכן */
 }

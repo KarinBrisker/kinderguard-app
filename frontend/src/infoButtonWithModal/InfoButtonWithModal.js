@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { styles } from "./styles";
+import React, { useState } from 'react';
 import {
     MDBBtn,
     MDBModal,
@@ -16,33 +15,46 @@ const InfoButtonWithModal = (props) => {
 
     const { buttonTitle, modalTitle, modalContent, closeButtonTitle } = props;
 
+    // Toggle modal open/close state
     const toggleOpen = () => setBasicModal(!basicModal);
 
-    const closeButtonText =  closeButtonTitle ?? 'Close'
     return (
         <>
-        <MDBBtn onClick={toggleOpen}>{buttonTitle}</MDBBtn>
-        <MDBModal open={basicModal} onClose={() => setBasicModal(false)} tabIndex='-1'>
-        <MDBModalDialog size='xl'>
-          <MDBModalContent>
-            <MDBModalHeader>
-              <MDBModalTitle>{modalTitle}</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={toggleOpen}>{closeButtonText}</MDBBtn>
-            </MDBModalHeader>
-            <MDBModalBody>{modalContent}</MDBModalBody>
+            {/* Main button to open the modal */}
 
-            <MDBModalFooter>
-              <MDBBtn color='secondary' onClick={toggleOpen}>
-                Close
-              </MDBBtn>
-            </MDBModalFooter>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal>
-       
+
+            <MDBBtn         size='lg'
+                            type='button'
+                            outline
+                            color="light"
+                            rounded
+                            target='_blank'
+                            onClick={toggleOpen}>{buttonTitle}</MDBBtn>
+
+            {/* Modal component */}
+            <MDBModal open={basicModal} onClose={toggleOpen} tabIndex='-1'>
+                <MDBModalDialog size='xl'>
+                    <MDBModalContent>
+                        <MDBModalHeader>
+                            <MDBModalTitle>{modalTitle}</MDBModalTitle>
+                            {/* Close button as an 'X' icon only */}
+                            <MDBBtn className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
+                        </MDBModalHeader>
+                        
+                        {/* Modal body content */}
+                        <MDBModalBody>{modalContent}</MDBModalBody>
+
+                        {/* Modal footer with white text on the close button */}
+                        <MDBModalFooter>
+                            <MDBBtn color='secondary' onClick={toggleOpen} style={{ color: '#ffffff' }}>
+                                {closeButtonTitle || 'Close'}
+                            </MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModalContent>
+                </MDBModalDialog>
+            </MDBModal>
         </>
     );
 };
-
 
 export { InfoButtonWithModal };

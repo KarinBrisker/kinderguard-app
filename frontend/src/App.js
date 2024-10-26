@@ -5,10 +5,9 @@ import './App.css';
 import { UploadContainer } from './upload-container/UploadContainer';
 import { CredentialsInput } from "./credentials-input/CredentialsInput";
 import { useEffect, useState } from "react";
-import { Disclaimer } from "./disclaimer/disclaimer";
-import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
 import { Footer } from "./footer/footer";
-
+import { VideosFetcher } from "./VideosFetcher/VideosFetcher";
+import React from 'react';
 
 const styles = {
     body: {
@@ -16,16 +15,39 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    errorMessage: {
+        color: 'red',
+        fontSize: '0.9em',
+        marginTop: '10px',
     }
-}
+};
 
 function App() {
     const [token, setToken] = useState('');
     const [accountId, setAccountId] = useState('');
     const [location, setLocation] = useState('');
     const [videoId, setVideoId] = useState(null);
+    const [error, setError] = useState('');  // Error message state
 
-    // prevent reload of the page since it will delete all the credentials
+    // Function to validate input fields
+    const validateFields = () => {
+        if (!token || !accountId || !location) {
+            setError("Please fill in all fields."); // Display error message
+            return false;
+        }
+        setError(''); // Clear error message
+        return true;
+    };
+
+    // Function to handle the upload click
+    const handleUploadClick = () => {
+        if (validateFields()) {
+            // Proceed with the upload if all fields are filled
+            setVideoId(null); // Reset video ID if necessary
+        }
+    };
+
     useEffect(() => {
         const handleBeforeUnload = (event) => {
             event.preventDefault();
@@ -33,33 +55,49 @@ function App() {
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Welcome to kinderguard app
-                </p>
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1>Welcome to Kinderguard App</h1>
             </header>
-            <body style={styles.body}>
-            <div style={styles.container}>
-                <div style={{padding: "15px"}}><Disclaimer/></div>
-                <br></br>
-                <CredentialsInput token={token} onChangeToken={setToken}
-                                  accountId={accountId} onChangeAccountId={setAccountId}
-                                  location={location} onChangeLocation={setLocation}
+            <main style={styles.body}>
+                <CredentialsInput 
+                    token={token} 
+                    onChangeToken={setToken}
+                    accountId={accountId} 
+                    onChangeAccountId={setAccountId}
+                    location={location} 
+                    onChangeLocation={setLocation}
                 />
-                <UploadContainer token={token} accountId={accountId} location={location} videoId={videoId} setVideoId={setVideoId}/>
-                <strong>OR</strong>
-                <VideosFetcher token={token} accountId={accountId} location={location} videoId={videoId} setVideoId={setVideoId}/>
-            </div>
-            </body>
+                
+                {/* Display error message if fields are missing */}
+                {error && <p style={styles.errorMessage}>{error}</p>}
+                
+                {/* Upload and Fetch buttons */}
+                <div>
+                    <UploadContainer 
+                        token={token} 
+                        accountId={accountId} 
+                        location={location} 
+                        videoId={videoId} 
+                        setVideoId={setVideoId} 
+                        onClick={handleUploadClick} // Trigger validation on click
+                    />
+                    <strong>OR</strong>
+                    <VideosFetcher 
+                        token={token} 
+                        accountId={accountId} 
+                        location={location} 
+                        videoId={videoId} 
+                        setVideoId={setVideoId} 
+                        onClick={handleUploadClick} // Trigger validation on click
+                    />
+                </div>
+            </main>
             <Footer />
         </div>
     );

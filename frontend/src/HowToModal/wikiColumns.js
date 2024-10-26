@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const WikiColumns = (props) => {
-    const { column1, column2 } = props;
+const WikiColumns = ({ column1, column2 }) => {
     return (
         <div style={styles.container}>
             <div style={styles.column}>
@@ -14,6 +14,7 @@ const WikiColumns = (props) => {
     );
 };
 
+// Define styles with responsive design in mind
 const styles = {
     container: {
         display: 'flex',
@@ -21,6 +22,8 @@ const styles = {
         alignItems: 'flex-start',
         padding: '20px',
         backgroundColor: '#f0f0f0',
+        gap: '20px', // Adds space between columns
+        flexWrap: 'wrap', // Allows columns to stack on smaller screens
     },
     column: {
         backgroundColor: '#ffffff',
@@ -28,7 +31,14 @@ const styles = {
         borderRadius: '8px',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         width: '45%',
-    }
+        minWidth: '400px', // Ensures readability on smaller screens
+    },
+};
+
+// PropTypes for type-checking props
+WikiColumns.propTypes = {
+    column1: PropTypes.node.isRequired,
+    column2: PropTypes.node.isRequired,
 };
 
 export { WikiColumns };

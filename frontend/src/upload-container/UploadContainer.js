@@ -3,30 +3,6 @@ import { EmbedContainer } from '../EmbedContainer/EmbedContainer';
 import { MDBFile } from 'mdb-react-ui-kit';
 import './UploadContainer.css';
 
-const styles = {
-    container: {
-        backgroundColor: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        textAlign: 'center',
-    },
-    filePicker: {
-        width: '500px',
-        padding: '10px',
-        margin: '10px 0',
-        borderRadius: '4px',
-        border: '1px solid #333',
-        backgroundColor: '#2c2c2c',
-        color: '#ffffff',
-        fontSize: '1em',
-        boxSizing: 'border-box',
-        cursor: 'pointer',
-    },
-    debugInputs: {
-        fontSize: '0.5em'
-    }
-};
 
 export function UploadContainer(props) {
     const { token, accountId, location, videoId, setVideoId } = props;
@@ -299,13 +275,6 @@ export function UploadContainer(props) {
             }
     }
 
-    const debugInputs = (
-        <div style={styles.debugInputs}>
-            <div>Using token {token}</div>
-            <div>Using accountId {accountId}</div>
-            <div>Location {location}</div>
-        </div>
-    );
 
     return (
         <div style={{ padding: '15px' }}>

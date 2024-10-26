@@ -1,90 +1,76 @@
+import React from 'react';
+
+// Define component styles
 const styles = {
     title: {
         margin: '0 0 10px 0',
         fontSize: '1.5em',
+        color: '#333333',
     },
     content: {
         margin: '0',
         fontSize: '1em',
         color: '#333333',
         textAlign: 'left'
+    },
+    list: {
+        paddingLeft: '20px',
     }
 };
 
+// Main component for Azure Portal instructions
 const WikiAzurePortal = () => {
     return (
         <div>
+            {/* Title */}
             <h2 style={styles.title}>Azure Portal (Microsoft FTEs)</h2>
-            <p style={styles.content}>
-                <ol>
+            
+            {/* Instructions Content */}
+            <div style={styles.content}>
+                <ol style={styles.list}>
                     <li>
-                        <a target='_blank' href='https://www.osgwiki.com/wiki/Azure_Credit'>Make sure</a> you have a
-                        personal Microsoft account, associated with your FTE Microsoft account
-                        in order to get free monthly Azure credits
+                        Ensure you have a <a target='_blank' href='https://www.osgwiki.com/wiki/Azure_Credit' rel="noreferrer">
+                        personal Microsoft account</a> associated with your FTE Microsoft account to receive free monthly Azure credits.
                     </li>
                     <li>
-                        Download <a target='_blank'
-                                                             href='https://github.com/KarinBrisker/kinderguard-app/blob/main/setup.ps1'>this
-                        script</a> and <a target='_blank'
-                                          href='https://github.com/KarinBrisker/kinderguard-app/blob/main/template.json'>this
-                        template</a> from
-                        GitHub.
+                        Download <a target='_blank' href='https://github.com/KarinBrisker/kinderguard-app/blob/main/setup.ps1' rel="noreferrer">this script</a> and <a target='_blank' href='https://github.com/KarinBrisker/kinderguard-app/blob/main/template.json' rel="noreferrer">this template</a> from GitHub.
+                    </li>
+                    <li>Install PowerShell for your operating system.</li>
+                    <li>
+                        Open a new PowerShell session and navigate (`cd`) to the directory where the <strong>setup.ps1</strong> script was downloaded.
                     </li>
                     <li>
-                        Install Powershell for your operating system
+                        Run <strong>./setup.ps1</strong><br />
+                        The script will open a browser window where you’ll need to log into your personal Microsoft account in Azure.
+                    </li>
+                    <li>Wait for the script to create the necessary resources in Azure.</li>
+                    <li>
+                        In the same directory as <strong>setup.ps1</strong>, you should now see a file named <strong>VIAccountInformation</strong> with all your account details.
                     </li>
                     <li>
-                        Start a new powershell script and cd into the directory where the
-                        script <strong>setup.ps1</strong> was
-                        downloaded
+                        In the <strong>VIAccountInformation</strong> file, find the link labeled <strong>GenerateTokenUrl</strong> and open it in a browser.
                     </li>
                     <li>
-                        Run <strong>./setup.ps1</strong><br/>
-                        The script will open a browser window where you will have to login into your personal Microsoft
-                        account into Azure
+                        If the link does not work, navigate to <strong>portal.azure.com → Resource groups → youralias-rg → viaccountyouralias → Management → Management API</strong>.
                     </li>
                     <li>
-                        Wait for the script to create the relevant resources in Azure
-                    </li>
-                    <li>
-                        In the directory where setup.ps1, there should now be a new file with all your account
-                        information called <strong>VIAccountInformation</strong>
-                    </li>
-                    <li>
-                        In the <strong>VIAccountInformation</strong> file, take the link
-                        called <strong>GenerateTokenUrl</strong> and navigate to it in a browser.
-                    </li>
-                    If the link does not work, you can access the same resource through <strong>portal.azure.com ->
-                    resource groups -> youralias-rg -> viaccountyouralias -> Management -> Management API</strong>
-                    <li>
-                        Set the permission type to <strong>Contributor</strong> and the scope
-                        to <strong>Account</strong>, then select <strong>Generate</strong> to get
-                        the
-                        access token.
+                        Set the permission type to <strong>Contributor</strong> and scope to <strong>Account</strong>, then click <strong>Generate</strong> to obtain the access token.
                     </li>
                 </ol>
-                <h5>Congrats! You can now use the kinderguard app with your credentials!</h5><br/>
 
+                {/* Success message */}
+                <h5>Congrats! You can now use the Kinderguard app with your credentials!</h5>
+
+                {/* Additional guidance */}
                 <h6>Where to find each credential:</h6>
-                <ul>
-                    <li>
-                        <strong>Account ID</strong>: can be found in your <strong>VIAccountInformation</strong> file
-                    </li>
-                    <li>
-                        <strong>Token</strong>: generated in Azure Portal - expires after one hour
-                    </li>
-                    <li>
-                        <strong>API Location</strong>: by default <strong>eastus</strong> but you can always check the
-                        region in Azure Portal
-                    </li>
+                <ul style={styles.list}>
+                    <li><strong>Account ID</strong>: Located in the <strong>VIAccountInformation</strong> file.</li>
+                    <li><strong>Token</strong>: Generated in Azure Portal; expires after one hour.</li>
+                    <li><strong>API Location</strong>: Typically <strong>eastus</strong>; confirm the region in Azure Portal.</li>
                 </ul>
-
-            </p>
+            </div>
         </div>
-
     );
 }
 
-export {
-    WikiAzurePortal
-};
+export { WikiAzurePortal };
