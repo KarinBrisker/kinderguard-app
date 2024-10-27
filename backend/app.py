@@ -120,8 +120,7 @@ def patch_index_async(account_id: str, location: str, video_id: str, access_toke
     if not custom_insights:
         logger.warning("Custom insights are empty, skipping the request.")
         return
-
-    logger.info(f"Custom insights: {custom_insights}")
+    
     params = {
         'accessToken': access_token
     }

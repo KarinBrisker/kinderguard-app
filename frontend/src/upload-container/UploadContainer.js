@@ -11,7 +11,7 @@ export function UploadContainer(props) {
 
     const handleFileUpload = async (event) => {
         const file = event.target.files[0];
-        if (file?.type === 'audio/wav' || file?.type === 'audio/mp3' || file?.type === 'video/mp4') {
+        if (file?.type === 'audio/wav' || file?.type === 'audio/mp3') {
             // Handle the file upload logic here
             console.log('File uploaded:', file);
             setIsLoading(true);
@@ -20,7 +20,7 @@ export function UploadContainer(props) {
             // Uploaded
             setIsUploaded(true);
         } else {
-            console.log('Please upload a WAV/MP4/MP3 file.');
+            console.log('Please upload a WAV/MP3 file.');
         }
     };
 
@@ -281,7 +281,7 @@ export function UploadContainer(props) {
             {/*{debugInputs}*/}
             {isLoading && <div className="loader"></div>}
             {!isUploaded && !isLoading && (
-                <MDBFile  accept=".wav,.mp4,.mp3" onChange={handleFileUpload}/>
+                <MDBFile  accept=".wav,.mp3" onChange={handleFileUpload}/>
             )}
             {videoId && <EmbedContainer videoId={videoId} accountId={accountId} location={location}/>}
         </div>
