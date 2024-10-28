@@ -3,7 +3,6 @@ import { EmbedContainer } from '../EmbedContainer/EmbedContainer';
 import { MDBFile } from 'mdb-react-ui-kit';
 import './UploadContainer.css';
 
-
 export function UploadContainer(props) {
     const { token, accountId, location, videoId, setVideoId } = props;
     const [isLoading, setIsLoading] = useState(false);
@@ -31,14 +30,13 @@ export function UploadContainer(props) {
             return;
         }
         // Add a unique timestamp to the file name to avoid conflicts
-        const uniqueFileName = `${Date.now()}_${file.name}`;
         // Create a from data from the file
         const formData = new FormData();
         formData.append('file', file);
-        let videoId = null;
-
+        let videoId = Array.from({length: 10}, () => Math.floor(Math.random() * 10)).join('');
+        
         try {
-            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${uniqueFileName}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos?name=${file.name}&privacy=public&indexingPreset=AdvancedAudio&language=he-IL`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -93,6 +91,8 @@ export function UploadContainer(props) {
 
     const fetchVideoStatus = async (currentVID, accountId, token, location) => {
         try {
+            currentVID = currentVID || videoId;
+
             const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos/${currentVID}/Index`, {
                 method: 'GET',
                 headers: {

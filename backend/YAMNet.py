@@ -1,19 +1,19 @@
 import csv
 import json
-
 import numpy as np
-import scipy
 import tensorflow as tf
 import tensorflow_hub as hub
 from scipy.io import wavfile
 import logging
+import scipy.signal
 
+# Configure logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 
-
 class YAMNetAudioClassifier:
     def __init__(self, model_url='https://tfhub.dev/google/yamnet/1', class_map_file='yamnet_supported_classes.json'):
+        # Load YAMNet model and class mapping file
         self.model = hub.load(model_url)
         self.class_map_file = class_map_file
         self.class_names = self.load_class_names(self.model.class_map_path().numpy())
@@ -21,142 +21,153 @@ class YAMNetAudioClassifier:
 
     @staticmethod
     def load_class_names(class_map_csv_text):
-        """Returns list of class names corresponding to score vector."""
+        """Load class names from the YAMNet model class map."""
         class_names = []
         with tf.io.gfile.GFile(class_map_csv_text) as csvfile:
             reader = csv.DictReader(csvfile)
-            for row in reader:
-                class_names.append(row['display_name'])
+            class_names = [row['display_name'] for row in reader]
         return class_names
 
     @staticmethod
     def ensure_sample_rate(original_sample_rate, waveform, desired_sample_rate=16000):
-        """Resample waveform if required."""
+        """Resample audio waveform if necessary."""
         if original_sample_rate != desired_sample_rate:
-            desired_length = int(round(float(len(waveform)) /
-                                       original_sample_rate * desired_sample_rate))
+            desired_length = int(round(len(waveform) * desired_sample_rate / original_sample_rate))
             waveform = scipy.signal.resample(waveform, desired_length)
         return desired_sample_rate, waveform
 
     def load_supported_classes(self):
-        """Load supported classes from JSON."""
+        """Load supported classes from a JSON file."""
         with open(self.class_map_file, 'r') as f:
             return json.load(f)
 
     def analyze_audio(self, wav_file_name):
-        """Load and analyze audio file."""
-        sample_rate, wav_data = wavfile.read(wav_file_name, 'rb')
+        """Process and analyze audio data to classify sound events."""
+        sample_rate, wav_data = wavfile.read(wav_file_name)
         sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
 
-        # Show some basic information about the audio
+        # Display audio information
         duration = len(wav_data) / sample_rate
-        print(f'Sample rate: {sample_rate} Hz')
-        print(f'Total duration: {duration:.2f}s')
+        logger.info(f'Sample rate: {sample_rate} Hz, Duration: {duration:.2f} seconds')
 
-        # Convert stereo to mono if needed
-        if len(wav_data.shape) == 2:
-            print("Converting stereo to mono...")
+        # Convert to mono if stereo
+        if wav_data.ndim == 2:
             wav_data = np.mean(wav_data, axis=1)
 
-        waveform = wav_data / tf.int16.max
-
-        # Run the model, check the output
+        waveform = wav_data / np.max(np.abs(wav_data))
         scores, embeddings, spectrogram = self.model(waveform)
-        scores_np = scores.numpy()
-        spectrogram_np = spectrogram.numpy()
-        inferred_class = self.class_names[scores_np.mean(axis=0).argmax()]
-        print(f'The main sound is: {inferred_class}')
+        
+        logger.info(f"Scores shape: {scores.shape}")
+        
+        inferred_class = self.class_names[scores.numpy().mean(axis=0).argmax()]
+        logger.info(f'Dominant sound: {inferred_class}')
 
-        return scores_np, duration
+        return scores.numpy(), duration
 
-    def generate_insights(self, scores, video_duration):
-        """Generate and save insights based on the model's scores, ensuring time does not exceed video duration and adding a small gap if needed."""
-        frame_duration = 0.975
-        grouped_results = {}
-        previous_end_time = 0  # Initialize with the start of the video
-        min_gap = 0.001  # Minimum gap of 1 millisecond between segments
+    def generate_insights(self, scores, audio_duration, frame_duration=0.48, min_gap=0.001):
+        """Generate insights from the model's score data without overlapping segments across all labels."""
+        logger.info(f"Number of frames: {len(scores)}")
+        logger.info(f"Audio duration: {audio_duration} seconds")
+        
+        insights = []  # רשימה של קטעים ללא חפיפות
+        previous_end_time = 0
+        current_label = None
+        current_confidence = 0
+        current_start_time = 0
 
         for i, score in enumerate(scores):
             top_class = np.argmax(score)
             class_name = self.class_names[top_class]
-
+            confidence = round(float(score[top_class]), 2)
+            
             if class_name.lower() not in self.supported_classes:
                 continue
 
-            # Calculate start and end times for the current segment
-            start_time = max(i * frame_duration, previous_end_time)
-            end_time = min((i + 1) * frame_duration, video_duration)
+            start_time = max(i * frame_duration, previous_end_time + min_gap)
+            end_time = min((i + 1) * frame_duration, audio_duration)
 
-            # Ensure a small gap between segments by adjusting the end time if it overlaps
-            if start_time < previous_end_time:
-                start_time = previous_end_time + min_gap
+            # אם end_time <= start_time, נתקן את הזמן הסיום כדי לוודא אורך חיובי
             if end_time <= start_time:
-                end_time = start_time + min_gap  # Add a small gap to avoid exact overlap
+                end_time = start_time + min_gap
 
-            # Format start and end times without limiting decimal places for seconds
-            formatted_start = f"{int(start_time // 3600)}:{int((start_time % 3600) // 60):02}:{start_time % 60:.6f}"
-            formatted_end = f"{int(end_time // 3600)}:{int((end_time % 3600) // 60):02}:{end_time % 60:.6f}"
+            # אם start_time חורג מעל audio_duration, נעצור את הלולאה
+            if start_time >= audio_duration:
+                break
+            if end_time > audio_duration:
+                end_time = audio_duration
 
-            # Update previous_end_time for the next segment to start after this one
+            # אם התווית הנוכחית שונה מהתווית הקודמת, סיים את הקטע הקודם והתחל חדש
+            if class_name != current_label:
+                if current_label is not None:
+                    # הוסף את הקטע הקודם לרשימת התובנות
+                    formatted_start = f"{int(current_start_time // 3600)}:{int((current_start_time % 3600) // 60):02}:{current_start_time % 60:.2f}"
+                    formatted_end = f"{int(previous_end_time // 3600)}:{int((previous_end_time % 3600) // 60):02}:{previous_end_time % 60:.2f}"
+                    if formatted_start != formatted_end:
+                        insights.append({
+                            "type": current_label,
+                            "id": int(np.argmax(scores[int(current_start_time / frame_duration)])),
+                            "instances": [{
+                                "confidence": current_confidence,
+                                "adjustedStart": formatted_start,
+                                "adjustedEnd": formatted_end,
+                                "start": formatted_start,
+                                "end": formatted_end
+                            }]
+                        })
+                # התחל קטע חדש
+                current_label = class_name
+                current_confidence = confidence
+                current_start_time = start_time
+            else:
+                # עדכן את הביטחון אם הביטחון הנוכחי גבוה יותר
+                if confidence > current_confidence:
+                    current_confidence = confidence
+
             previous_end_time = end_time
 
-            # Add to grouped results (continue with rest of logic as needed)
+        # הוסף את הקטע האחרון אם קיים
+        if current_label is not None:
+            formatted_start = f"{int(current_start_time // 3600)}:{int((current_start_time % 3600) // 60):02}:{current_start_time % 60:.2f}"
+            formatted_end = f"{int(previous_end_time // 3600)}:{int((previous_end_time % 3600) // 60):02}:{previous_end_time % 60:.2f}"
+            if formatted_start != formatted_end:
+                insights.append({
+                    "type": current_label,
+                    "id": int(np.argmax(scores[int(current_start_time / frame_duration)])),
+                    "instances": [{
+                        "confidence": current_confidence,
+                        "adjustedStart": formatted_start,
+                        "adjustedEnd": formatted_end,
+                        "start": formatted_start,
+                        "end": formatted_end
+                    }]
+                })
 
-            # Format start and end times without limiting the decimal places for seconds
-            formatted_start = f"{int(start_time // 3600)}:{int((start_time % 3600) // 60):02}:{start_time % 60:.6f}"
-            formatted_end = f"{int(end_time // 3600)}:{int((end_time % 3600) // 60):02}:{end_time % 60:.6f}"
-            
-            # Ensure non-zero time intervals
-            if formatted_start == formatted_end:
-                continue
+        # ארגן את התובנות לפי סוג
+        organized_insights = {}
+        for insight in insights:
+            label = insight["type"]
+            if label not in organized_insights:
+                organized_insights[label] = {"id": insight["id"], "instances": []}
+            organized_insights[label]["instances"].extend(insight["instances"])
 
-            # Prepare the result for this segment
-            segment = {
-                "confidence": round(float(score[top_class]), 2),
-                "adjustedStart": formatted_start,
-                "adjustedEnd": formatted_end,
-                "start": formatted_start,
-                "end": formatted_end
-            }
-
-            # Group by class name
-            if class_name not in grouped_results:
-                grouped_results[class_name] = {
-                    "id": i,  # Assign the first instance ID
-                    "instances": []
-                }
-
-            grouped_results[class_name]["instances"].append(segment)
-
-        # Format the output into the required structure
-        results = []
-        for class_name, data in grouped_results.items():
-            results.append({
-                "instances": data["instances"],
-                "type": class_name,  # Label for this class
-                "id": data["id"]  # The ID of the first occurrence of this class
-            })
-
-        insights_output = [
-            {
-                "name": "yamnet",
-                "displayName": "sound labels",
-                "displayType": "Capsule",
-                "results": results  # Here `results` is a list of dictionaries
-            }
+        formatted_insights = [
+            {"name": "yamnet", "displayName": "sound labels", "displayType": "Capsule", "results": [
+                {"type": class_name, "id": data["id"], "instances": data["instances"]}
+                for class_name, data in organized_insights.items()
+            ]}
         ]
-
-        # Add a debug print to see the structure of `insights_output`
-        print(json.dumps(insights_output, indent=4))
         
-        return insights_output
-    
+        logger.info("Generated insights:\n" + json.dumps(formatted_insights, indent=4))
+        return formatted_insights
+
     def smooth_results(self, insights):
+        """Smooth segments by merging adjacent segments where needed."""
+        min_gap = 0.001  # Minimum gap of 1 millisecond between segments
         smoothed_results = []
 
         for result in insights:
             smoothed_instances = {}
-            
+
             for instance in result["results"]:
                 instance_id = instance["id"]
                 instance_type = instance["type"]
@@ -187,33 +198,27 @@ class YAMNetAudioClassifier:
 
         return smoothed_results
 
-    def save_insights(self, insights_output, output_file='yamnet_custom_insights_output.json'):
-        """Save insights to a JSON file."""
+    def save_insights(self, insights, output_file='yamnet_custom_insights_output.json'):
+        """Save the insights to a JSON file."""
         with open(output_file, 'w') as f:
-            json.dump(insights_output, f, indent=4)
-        print(f"Results saved to {output_file}")
+            json.dump(insights, f, indent=4)
+        logger.info(f"Results saved to {output_file}")
 
     def __call__(self, wav_file_name, output_file='yamnet_custom_insights_output.json'):
-        """Process the audio file, generate insights, and save them."""
+        """End-to-end process of loading, analyzing, and saving audio insights."""
         # Analyze the audio file
         scores, duration = self.analyze_audio(wav_file_name)
         # Generate insights from the scores
         insights = self.generate_insights(scores, duration)
-        # Smooth the results
-        smoothed_insights = self.smooth_results(insights)
-
-        logger.info(f"Generated {len(smoothed_insights)} insights")
-        print(f"Insights: {json.dumps(insights, indent=4)}")
-        print(f"Smoothed Insights: {json.dumps(smoothed_insights, indent=4)}")
-
+        # אין צורך ב-smooth_results אם ה-insights כבר ללא חפיפות
+        
+        logger.info(f"Generated insights: {json.dumps(insights, indent=4)}")
+        
         # Save the insights to a JSON file
         self.save_insights(insights, output_file)
-        return smoothed_insights
-
+        return insights
 
 # Example usage
 if __name__ == "__main__":
     classifier = YAMNetAudioClassifier()
-
-    # Process the audio file and generate insights with a single call
-    classifier('place your audio file path here')
+    classifier('path_to_audio_file.wav')

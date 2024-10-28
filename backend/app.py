@@ -39,9 +39,9 @@ config = dotenv_values('.env')
 
 def background_task(file, video_id, account_id, access_token, location):
     # Simulating a long-running task with a delay
-    print("Started background task...")
-    print(f"Video ID: {video_id}, Account ID: {account_id}")
-    print(f"Location: {location}, Access Token: {access_token}")
+    logger.info("Started background task...")
+    logger.info(f"Video ID: {video_id}, Account ID: {account_id}")
+    logger.info(f"Location: {location}, Access Token: {access_token}")
     
     try:
         # Open the file in background task
