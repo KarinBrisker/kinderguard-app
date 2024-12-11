@@ -6,7 +6,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./backend:/app
+      - ./backend/app.py:/app/app.py
+      - ./backend/requirements.txt:/app/requirements.txt
     environment:
       - FLASK_ENV=development
       - PYTHONUNBUFFERED=1
