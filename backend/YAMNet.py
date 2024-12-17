@@ -1,11 +1,14 @@
 import csv
 import json
+import os
+
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
 from scipy.io import wavfile
 import logging
 import scipy.signal
+from pydub import AudioSegment
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -41,9 +44,26 @@ class YAMNetAudioClassifier:
         with open(self.class_map_file, 'r') as f:
             return json.load(f)
 
+    def convert_to_pcm(self, input_file, output_file):
+        audio = AudioSegment.from_file(input_file, codec="pcm_s16le")
+        audio.export(output_file, format="wav", codec="pcm_s16le")
+
     def analyze_audio(self, wav_file_name):
         """Process and analyze audio data to classify sound events."""
-        sample_rate, wav_data = wavfile.read(wav_file_name)
+        try:
+            sample_rate, wav_data = wavfile.read(wav_file_name)
+        except ValueError as e:
+            if "Unknown wave file format" in str(e):
+                # If the format is unsupported, convert the file to PCM format
+                pcm_file_name = "converted_pcm.wav"
+                self.convert_to_pcm(wav_file_name, pcm_file_name)
+                # Retry reading the converted PCM file
+                sample_rate, wav_data = wavfile.read(pcm_file_name)
+                # Optionally, clean up the converted file
+                os.remove(pcm_file_name)
+            else:
+                # Re-raise the exception if it's not related to an unsupported format
+                raise
         sample_rate, wav_data = self.ensure_sample_rate(sample_rate, wav_data)
 
         # Display audio information
@@ -208,6 +228,7 @@ class YAMNetAudioClassifier:
         """End-to-end process of loading, analyzing, and saving audio insights."""
         # Analyze the audio file
         scores, duration = self.analyze_audio(wav_file_name)
+
         # Generate insights from the scores
         insights = self.generate_insights(scores, duration)
         # אין צורך ב-smooth_results אם ה-insights כבר ללא חפיפות

@@ -79,3 +79,4 @@ yarg==0.1.9
 scipy
 tensorflow==2.16.2
 tensorflow-hub==0.16.1
+pydub==0.25.1
