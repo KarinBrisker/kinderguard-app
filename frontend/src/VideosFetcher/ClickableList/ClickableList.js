@@ -1,11 +1,21 @@
 import React from 'react';
+import { MDBBtn } from "mdb-react-ui-kit";
+
 
 const ClickableList = (props) => {
-    const { videos, onClickItem } = props;
+    const { videos, onClickItem, onDeleteVideo } = props;
     const handleClick = (id) => {
         console.log(`Clicked ID: ${id}`);
         onClickItem(id)
     };
+
+    const handleDeleteClick = (e, videoId) => {
+        const userConfirmed = window.confirm("Are you sure you want to delete this video from video indexer?");
+        if (userConfirmed) {
+            onDeleteVideo(videoId);
+        }
+        e.stopPropagation();
+    }
 
     return (
         <ul style={styles.list}>Choose from existing videos:
@@ -15,6 +25,13 @@ const ClickableList = (props) => {
                     <div>Name: {video?.name}</div>
                     <div>State: {video?.state}</div>
                     <div>Timestamp: {video?.created}</div>
+                    <MDBBtn size='lg'
+                            type='button'
+                            outline
+                            color="danger"
+                            rounded
+                            target='_blank'
+                            onClick={(e) => handleDeleteClick(e, video.id)}>Delete</MDBBtn>
                 </li>
             ))}
         </ul>

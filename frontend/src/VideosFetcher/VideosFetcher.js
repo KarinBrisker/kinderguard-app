@@ -19,6 +19,27 @@ export function VideosFetcher(props) {
         setIsLoading(false)
     };
 
+    const deleteVideoFromVI = async (videoId) => {
+        try {
+            const response = await fetch(`https://api.videoindexer.ai/${location}/Accounts/${accountId}/Videos/${videoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            console.log('Delete successful:');
+            await fetchExistingVideos();
+
+        } catch (error) {
+            console.error('Error deleting video:', error);
+        }
+    }
+
     const fetchVideosFromVideoIndexer = async (file) => {
         if (!accountId || !token) {
             console.error('Account ID or token is missing.');
@@ -54,7 +75,7 @@ export function VideosFetcher(props) {
 
 
     const videoIdsListElement = videosList?.length > 0 ?
-        <ClickableList videos={videosList} onClickItem={setVideoId}/> : null;
+        <ClickableList videos={videosList} onClickItem={setVideoId} onDeleteVideo={deleteVideoFromVI}/> : null;
 
     return (
         <div style={{padding: "15px"}}>
