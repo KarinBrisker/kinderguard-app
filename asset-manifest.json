@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/kinderguard-app/static/css/main.15f1c227.css",
-    "main.js": "/kinderguard-app/static/js/main.f0713841.js",
+    "main.css": "/kinderguard-app/static/css/main.29f4442c.css",
+    "main.js": "/kinderguard-app/static/js/main.581482a6.js",
     "static/js/453.682ebf46.chunk.js": "/kinderguard-app/static/js/453.682ebf46.chunk.js",
     "static/media/fa-solid-900.ttf": "/kinderguard-app/static/media/fa-solid-900.07ed6d5fa32c1d54af0f.ttf",
     "static/media/kinderguard_logo.png": "/kinderguard-app/static/media/kinderguard_logo.4ec374f57b9716a03872.png",
@@ -13,12 +13,12 @@
     "static/media/fa-v4compatibility.ttf": "/kinderguard-app/static/media/fa-v4compatibility.0f6cb412603527bda691.ttf",
     "static/media/fa-v4compatibility.woff2": "/kinderguard-app/static/media/fa-v4compatibility.6cfec8414be20e2c3426.woff2",
     "index.html": "/kinderguard-app/index.html",
-    "main.15f1c227.css.map": "/kinderguard-app/static/css/main.15f1c227.css.map",
-    "main.f0713841.js.map": "/kinderguard-app/static/js/main.f0713841.js.map",
+    "main.29f4442c.css.map": "/kinderguard-app/static/css/main.29f4442c.css.map",
+    "main.581482a6.js.map": "/kinderguard-app/static/js/main.581482a6.js.map",
     "453.682ebf46.chunk.js.map": "/kinderguard-app/static/js/453.682ebf46.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.15f1c227.css",
-    "static/js/main.f0713841.js"
+    "static/css/main.29f4442c.css",
+    "static/js/main.581482a6.js"
   ]
 }
